@@ -1,1 +1,6 @@
 # webkriti
+Whatsup Guys......
+In Case of any difficulty contact/reach 209 ASAP....
+start by git pull
+Before adding anything create a new branch by git branch<newbranchname> then git checkout <newbranch>
+then add to the new branch
