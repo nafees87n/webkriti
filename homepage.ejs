@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <title>Document</title>
+    <link rel="stylesheet" href="homepage.css">
+</head>
+<body>
+<div class = "container">
+    <header>
+        <!-- <img src="cric3.png" alt = "logo" class = logo> -->
+    <nav>
+        <ul>
+            <li><a href="">HOME</a></li>
+            <li><a href="">BOOKINGS</a></li>
+            <li><a href="">FAQS</a></li>
+            <li><a href="">PROFILE</a></li>
+        </ul>
+    </nav>
+    </header>
+        <div id="main">
+            <div id="signin" class="box">
+                <form action="">
+                    <label>Name:
+                        <input type="text" name="Name" placeholder="Name" required>
+                        </label><br>
+            
+                        <label>Password:
+                            <input type="Password" name="password" placeholder="Enter Password" required>
+                        </label><br>
+                        
+                        <input type="submit" placeholder="Sign In">
+                </form>
+                <p class="in_up">Sign Up!</p>
+                <p ><a href="">Agent Login</a></p>
+            </div>
+            <div id="signup" class="box">
+                <form action="/" method="POST">
+                    <label>Name:
+                        <input type="text" name="name" placeholder="Name" required>
+                        </label><br>
+            
+                        <label>Email:
+                            <input type="email" name="email" placeholder="Enter Email" required>
+                        </label><br>
+                        <label>Password:
+                            <input type="Password" name="password" placeholder="Enter Password" required>
+                        </label><br>
+                        
+                        <label>Confirm Password:
+                            <input type="Password" name="confirm" placeholder="Enter Password" required>
+                        </label><br>
+                        
+                        <!-- <label>Birth Date:</label>
+                        <input type="date" name="BirthDate" required><br> -->
+                        <input type="submit" placeholder="Sign Up">
+                </form>
+                <p class="up_in">Sign In!</p>
+                <p ><a href="">Agent Login</a></p>
+                
+            </div>
+        </div>
+
+        
+
+    </div>
+    <script>
+        var insign=document.getElementById("signin");
+        var up=document.getElementById("signup");
+        document.querySelector(".in_up").addEventListener("click",()=>{
+            insign.style.display= "none";
+            up.style.display= "block";
+            // document.querySelector(".in_up").textContent="hey";
+        });
+        document.querySelector(".up_in").addEventListener("click",()=>{
+            insign.style.display= "block";
+            up.style.display= "none";
+            // document.querySelector(".in_up").textContent="hey";
+        });
+    </script>
+</body>
+
+</html>

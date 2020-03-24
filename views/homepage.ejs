@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <title>Document</title>
+    <link rel="stylesheet" href="homepage.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <img src="cric3removed2.png" alt="logo" class="logo" height="10px"/>
+            <p><%= msg %></p>
+            <nav>
+                <ul>
+                    <li><a href="">HOME</a></li>
+                    <li><a href="">BOOKINGS</a></li>
+                    <li><a href="">FAQS</a></li>
+                    <li><a href="">PROFILE</a></li>
+                </ul>
+            </nav>
+        </header>
+        <div id="main">
+            <div id="signin" class="box">
+                <!-- <h1 style="text-align: center">SIGN UP</h1> -->
+
+                <form action="/login" method="POST">
+                    <h1 style="text-align: center">SIGN IN</h1>
+
+                    <label>Username:
+                        <input type="text" name="username" placeholder="Name" required>
+                    </label><br>
+
+
+                    <label>Password:
+                        <input type="Password" name="password" placeholder="Enter Password" required>
+                    </label><br>
+
+
+
+                    <!-- <p><a href="">Sign In!</a></p> -->
+                    <!-- <p><a href="">Sign Up!</a></p>
+                <p><a href="">Agent Login</a></p>
+                 -->
+                    <div class="buttons">
+                        <button type="submit" class="subbut">Sign In</button>
+                        <p class="in_up">Sign Up</p>
+                        <p class="apage">Agent Login</p>
+                    </div>
+                </form>
+            </div>
+            <div id="signup" class="box">
+                <!-- <h1 style="text-align: center">SIGN UP</h1> -->
+
+                <form action="/register" method="POST">
+                    <h1 style="text-align: center">SIGN UP</h1>
+
+                    <label>Userame:
+                        <input type="text" name="username" placeholder="Name" required>
+                    </label><br>
+
+                    <label>Email:
+                        <input type="email" name="email" placeholder="Enter Email" required>
+                    </label><br>
+                    <label>Password:
+                        <input type="Password" name="password" placeholder="Enter Password" required>
+                    </label><br>
+
+                    <label>Confirm Password:
+                        <input type="Password" name="confirm" placeholder="Enter Password" required>
+                    </label><br>
+
+                    <label>Birth Date:</label>
+                    <input type="date" name="dob" required><br>
+
+                    <!-- <p><a href="">Sign In!</a></p> -->
+                    <!-- <p><a href="">Sign Up!</a></p>
+                <p><a href="">Agent Login</a></p>
+                 -->
+                    <div class="buttons">
+                        <button type="submit" class="subbut">Sign Up</button>
+                        <p class="up_in">Sign In</p>
+                        <p class="apage">Agent Login</p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        var insign = document.getElementById("signin");
+        var up = document.getElementById("signup");
+        document.querySelector(".in_up").addEventListener("click", () => {
+            insign.style.display = "none";
+            up.style.display = "block";
+            // document.querySelector(".in_up").textContent="hey";
+        });
+        document.querySelector(".up_in").addEventListener("click", () => {
+            insign.style.display = "block";
+            up.style.display = "none";
+            // document.querySelector(".in_up").textContent="hey";
+        });
+    </script>
+
+</body>
+
+</html>
