@@ -94,6 +94,27 @@ app.post('/register', (req, res) => {
     }
 
 });
+app.post('/agent_login',(req,res)=>{
+    const sql=`SELECT username,pwdhash FROM agents WHERE username=?`
+    const pass=req.body.password;
+    const name=req.body.username;
+    con.query(sql,[name],(err,rows)=>{
+        // console.log(rows);
+        if(!rows.length){
+            res.redirect('/agent?msg=Invalid User name&type=login');
+        }
+        else
+        bcrypt.compare(pass,rows[0].pwdhash, function(err, result) {
+            if(!result){
+                res.redirect('/agent?msg=Incorrect password&type=login');
+            }
+            else{
+                // req.session.username=name;
+                res.send("success");
+            }
+        });
+    });
+});
 app.post('/login',(req,res)=>{
     const sql=`SELECT username,pwdhash FROM users WHERE username=?`
     const pass=req.body.password;
