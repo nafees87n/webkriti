@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <link href="https://fonts.googleapis.com/css?family=Caveat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="agent.css">
+</head>
+<style>
+    h2 {
+        font-family: 'Caveat';
+        color: aliceblue;
+        /* padding: 10px;*/
+        font-size: 75px;
+        /*text-align:right;
+            position : relative;
+            bottom:-300px;
+            left:-180px; */
+    }
+</style>
+
+<body>
+    <div class="main">
+        <div id="head">
+            <header>
+                <img src="cric3removed2.png" alt="logo" class="logo" height="15%" width="15%">
+                <nav>
+                    <ul>
+                        <!-- <button type=button class="close">CLOSE</button> -->
+                        <li><a href="/">Home</a></li>
+                    </ul>
+                </nav>
+            </header>
+        </div>
+        <div id="box">
+            <div class="box registrationbox" id="signin">
+                <form method="post" action="/login">
+                    <h1 style="text-align: center;">SIGN IN</h1>
+                    <!-- <img src="cric3.png" id="user" > -->
+                    <label>Username:
+                        <input type="text" name="name" placeholder="Name" required>
+                    </label><br>
+
+
+                    <label>Password:
+                        <input type="Password" minlength="8" name="password" placeholder="Enter Password" required>
+                    </label><br>
+
+                    <!-- <input type="submit" placeholder="Sign Up" style="align-items: center"> -->
+
+                    <div class="buttons">
+                        <button type="submit" class="signin">Sign In</button>
+                    </div>
+                </form>
+                <p style="text-align: center;">Don't have an account? Click here to
+                    <span class="in_up" style="text-decoration: underline;">register</span> </p>
+            </div>
+            <div class="place registrationbox box" id="signup">
+                <form method="post" action="/register" id="register1">
+                    <h1 style="text-align: center;">SIGN UP</h1>
+                    <!-- <img src="cric3.png" id="user" > -->
+                    <label>Username:
+                        <input type="text" name="name" placeholder="Name" required>
+                    </label><br>
+
+                    <label>Email:
+                        <input type="email" name="email" placeholder="Enter Email" required>
+                    </label><br>
+                    <label>Password:
+                        <input type="Password" minlength="8" name="password" placeholder="Enter Password" required>
+                    </label><br>
+
+                    <label>Confirm Password:
+                        <input type="Password" minlength="8" name="confirm" placeholder="Enter Password" required>
+                    </label><br>
+
+                    <label>Birth Date:</label>
+                    <input type="date" name="Birth Date" required><br>
+                    <!-- <input type="submit" placeholder="Sign Up" style="align-items: center"> -->
+
+                    <div class="buttons">
+                        <button type="submit" class="signin">Sign Up</button>
+                    </div>
+                </form>
+                <p style="text-align: center;">Already have an account? Click here to
+                    <span class="up_in" style="text-decoration: underline;">login</span> </p>
+            </div>
+        </div>
+    </div>
+    <script>
+        var insign = document.getElementById("signin");
+        var up = document.getElementById("signup");
+        document.querySelector(".in_up").addEventListener("click", () => {
+            insign.style.display = "none";
+            up.style.display = "block";
+            // document.querySelector(".in_up").textContent="hey";
+        });
+        document.querySelector(".up_in").addEventListener("click", () => {
+            insign.style.display = "block";
+            up.style.display = "none";
+            // document.querySelector(".in_up").textContent="hey";
+        });
+    </script>
+</body>
+
+</html>

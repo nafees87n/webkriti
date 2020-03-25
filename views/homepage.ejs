@@ -13,7 +13,7 @@
     <div class="container">
         <header>
             <img src="cric3removed2.png" alt="logo" class="logo" height="10px"/>
-            <p><%= msg %></p>
+            <p></p>
             <nav>
                 <ul>
                     <li><a href="">HOME</a></li>
@@ -37,7 +37,9 @@
 
                     <label>Password:
                         <input type="Password" name="password" placeholder="Enter Password" required>
-                    </label><br>
+                    </label>
+                    <p><%=msg %></p>
+                    <br>
 
 
 
@@ -48,7 +50,7 @@
                     <div class="buttons">
                         <button type="submit" class="subbut">Sign In</button>
                         <p class="in_up">Sign Up</p>
-                        <p class="apage">Agent Login</p>
+                        <p class="apage"><a href="/agent" class="apage"><span class="apage">Agent Login</span></a></p>
                     </div>
                 </form>
             </div>
@@ -83,7 +85,7 @@
                     <div class="buttons">
                         <button type="submit" class="subbut">Sign Up</button>
                         <p class="up_in">Sign In</p>
-                        <p class="apage">Agent Login</p>
+                        <p class="apage"><a href="/agent" class="apage"><span class="apage">Agent Login</span></a></p>
                     </div>
                 </form>
             </div>

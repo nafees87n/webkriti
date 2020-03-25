@@ -9,7 +9,7 @@ app.use(session({
     secret: 'kpNNSM',
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 100000 }
+    cookie: { maxAge: 10000000 }
 }));
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -34,6 +34,9 @@ app.get('/', (req, res) => {
     res.render("homepage.ejs", {
         msg: msg
     });
+});
+app.get('/agent',(req,res)=>{
+    res.render("agent.ejs");
 });
 app.post('/register', (req, res) => {
     const name = req.body.username,
@@ -77,20 +80,16 @@ app.post('/register', (req, res) => {
                         if (err) res.send(err);
                         else {
                             req.session.username = name;
-                            res.render('dashboard.ejs', {
-                                user: name
-                            });
+                            res.redirect('/dashboard');
+                            // res.render('dashboard.ejs', {
+                            //     user: name
+                            // });
                         }
                     });
                 });
             }
         });
     }
-
-    // const h=bcrypt.hashSync(pass,19);
-    // else {
-        
-    // }
 
 });
 app.post('/login',(req,res)=>{
@@ -102,6 +101,7 @@ app.post('/login',(req,res)=>{
         if(!rows.length){
             res.redirect('/?msg=Invalid User name');
         }
+        else
         bcrypt.compare(pass,rows[0].pwdhash, function(err, result) {
             if(!result){
                 res.redirect('/?msg=Incorrect password');
@@ -123,6 +123,59 @@ app.get('/dashboard', (req, res) => {
     else{
         res.redirect('/?msg=not logged in');
     }
+});
+app.post('/agent_register', (req, res) => {
+    const name = req.body.username,
+        email = req.body.email,
+        pass1 = req.body.password,
+        pass2 = req.body.confirm,
+        dob = req.body.dob;
+    var msg = "";
+    var sql = ``;
+    if (pass1 != pass2) {
+        msg = "Passwords do not match"
+        res.render("agent.ejs",{
+            msg:msg
+        });
+        return;
+    } else if(pass1.length<8){
+        msg="Password must be greater than 8 characters"
+        res.render("agent.ejs",{
+            msg:msg
+        });
+        return;
+    } else{
+        sql=`SELECT username,email FROM agents WHERE username=? OR email=?`
+        con.query(sql,[name,email],(err,rows)=>{
+            if(rows.length){
+                if(rows[0].username.length) msg="Username already taken"
+                if(rows[0].email.length) msg="Email already registered"
+            }
+            if(rows.length){
+                res.render("agent.ejs",{
+                    msg:msg
+                })
+            }
+            else{
+                bcrypt.hash(pass1, 19, function (err, hash) {
+                    const h = hash;
+                    const p = [[name, email, h, dob]];
+                    sql = `INSERT INTO agents (username, email,pwdhash,dob) VALUES ?`
+                    con.query(sql, [p], (err) => {
+                        if (err) res.send(err);
+                        else {
+                            req.session.username = name;
+                            res.redirect('/dashboard');
+                            // res.render('dashboard.ejs', {
+                            //     user: name
+                            // });
+                        }
+                    });
+                });
+            }
+        });
+    }
+
 });
 
 app.get('/logout', (req, res) => {
