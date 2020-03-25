@@ -30,13 +30,20 @@ app.use(express.static("public"));
 
 
 app.get('/', (req, res) => {
-    msg=req.query.msg;
+    let msg=req.query.msg;
+    let type=req.query.type;
     res.render("homepage.ejs", {
-        msg: msg
+        msg: msg,
+        type:type
     });
 });
 app.get('/agent',(req,res)=>{
-    res.render("agent.ejs");
+    let msg=req.query.msg;
+    let type=req.query.type;
+    res.render("agent.ejs",{
+        msg:msg,
+        type:type
+    });
 });
 app.post('/register', (req, res) => {
     const name = req.body.username,
@@ -45,18 +52,12 @@ app.post('/register', (req, res) => {
         pass2 = req.body.confirm,
         dob = req.body.dob;
     var msg = "";
-    var flag = 1;
     var sql = ``;
     if (pass1 != pass2) {
         msg = "Passwords do not match"
         res.render("homepage.ejs",{
-            msg:msg
-        });
-        return;
-    } else if(pass1.length<8){
-        msg="Password must be greater than 8 characters"
-        res.render("homepage.ejs",{
-            msg:msg
+            msg:msg,
+            type:"signup"
         });
         return;
     } else{
@@ -64,11 +65,12 @@ app.post('/register', (req, res) => {
         con.query(sql,[name,email],(err,rows)=>{
             if(rows.length){
                 if(rows[0].username.length) msg="Username already taken"
-                if(rows[0].email.length) msg="Email already registered"
+                else if(rows[0].email.length) msg="Email already registered"
             }
             if(rows.length){
                 res.render("homepage.ejs",{
-                    msg:msg
+                    msg:msg,
+                    type:"signup"
                 })
             }
             else{
@@ -99,12 +101,12 @@ app.post('/login',(req,res)=>{
     con.query(sql,[name],(err,rows)=>{
         // console.log(rows);
         if(!rows.length){
-            res.redirect('/?msg=Invalid User name');
+            res.redirect('/?msg=Invalid User name&type=login');
         }
         else
         bcrypt.compare(pass,rows[0].pwdhash, function(err, result) {
             if(!result){
-                res.redirect('/?msg=Incorrect password');
+                res.redirect('/?msg=Incorrect password&type=login');
             }
             else{
                 req.session.username=name;
@@ -121,7 +123,7 @@ app.get('/dashboard', (req, res) => {
         });
     }
     else{
-        res.redirect('/?msg=not logged in');
+        res.redirect('/?msg=not logged in&type=login');
     }
 });
 app.post('/agent_register', (req, res) => {
@@ -135,25 +137,21 @@ app.post('/agent_register', (req, res) => {
     if (pass1 != pass2) {
         msg = "Passwords do not match"
         res.render("agent.ejs",{
-            msg:msg
+            msg:msg,
+            type:"signup"
         });
         return;
-    } else if(pass1.length<8){
-        msg="Password must be greater than 8 characters"
-        res.render("agent.ejs",{
-            msg:msg
-        });
-        return;
-    } else{
+    }else{
         sql=`SELECT username,email FROM agents WHERE username=? OR email=?`
         con.query(sql,[name,email],(err,rows)=>{
             if(rows.length){
                 if(rows[0].username.length) msg="Username already taken"
-                if(rows[0].email.length) msg="Email already registered"
+                else if(rows[0].email.length) msg="Email already registered"
             }
             if(rows.length){
                 res.render("agent.ejs",{
-                    msg:msg
+                    msg:msg,
+                    type:"signup"
                 })
             }
             else{
@@ -164,8 +162,9 @@ app.post('/agent_register', (req, res) => {
                     con.query(sql, [p], (err) => {
                         if (err) res.send(err);
                         else {
-                            req.session.username = name;
-                            res.redirect('/dashboard');
+                            // req.session.username = name;
+                            res.send("SUCCESS");
+                            // res.redirect('/dashboard');
                             // res.render('dashboard.ejs', {
                             //     user: name
                             // });

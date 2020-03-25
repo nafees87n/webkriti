@@ -39,8 +39,9 @@ body{
 	background: url('bg3.jpg') no-repeat;
 	/* height:90%; */
 	/* background-attachment: fixed;  */
-    /* background-position: center; */
-	background-size: cover;
+	/* background-position: center; */
+	background-attachment:scroll;
+	background-size:cover;
 	font-family: sans-serif;
 	text-size-adjust: auto;
 }
@@ -146,7 +147,7 @@ button{
 	overflow: hidden;
 	transition : 0.2s;
 	width: 60%;
-	border-radius:100vh;
+	border-radius:100%;
 	/* transition : 0.2s; */
 	}
 	.buttons :hover{

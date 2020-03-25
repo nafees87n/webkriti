@@ -4,7 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration Form</title>
+    <title>Agent</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
     <link href="https://fonts.googleapis.com/css?family=Caveat&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="agent.css">
 </head>
@@ -35,8 +39,14 @@
             </header>
         </div>
         <div id="box">
-            <div class="box registrationbox" id="signin">
-                <form method="post" action="/login">
+            <% if(type=="signup"){ %>
+                <div id="signin" class="box registrationbox" style="display: none;">
+                <% }else if(type=="login"){ %>
+                <div id="signin" class="box registrationbox" style="display: block;">
+                <% }else{ %>
+                <div id="signin" class="box registrationbox">
+                <% } %>
+                <form method="post" action="/agent_login">
                     <h1 style="text-align: center;">SIGN IN</h1>
                     <!-- <img src="cric3.png" id="user" > -->
                     <label>Username:
@@ -46,7 +56,9 @@
 
                     <label>Password:
                         <input type="Password" minlength="8" name="password" placeholder="Enter Password" required>
-                    </label><br>
+                    </label>
+                    <% if(type=="login") %><p><%=msg %></p>
+                    <br>
 
                     <!-- <input type="submit" placeholder="Sign Up" style="align-items: center"> -->
 
@@ -57,12 +69,19 @@
                 <p style="text-align: center;">Don't have an account? Click here to
                     <span class="in_up" style="text-decoration: underline;">register</span> </p>
             </div>
-            <div class="place registrationbox box" id="signup">
-                <form method="post" action="/register" id="register1">
+            <!-- <div class="place registrationbox box" id="signup"> -->
+                <% if(type=="login"){ %>
+                    <div id="signup" class="box registrationbox place" style="display: none;">
+                    <% }else if(type=="signup"){ %>
+                    <div id="signup" class="box place registrationbox" style="display: block;">
+                    <% }else{ %>
+                    <div id="signup" class="box place registrationbox">
+                    <% } %>
+                <form method="POST" action="/agent_register" id="register1">
                     <h1 style="text-align: center;">SIGN UP</h1>
                     <!-- <img src="cric3.png" id="user" > -->
                     <label>Username:
-                        <input type="text" name="name" placeholder="Name" required>
+                        <input type="text" name="username" placeholder="Name" required>
                     </label><br>
 
                     <label>Email:
@@ -74,10 +93,12 @@
 
                     <label>Confirm Password:
                         <input type="Password" minlength="8" name="confirm" placeholder="Enter Password" required>
-                    </label><br>
+                    </label>
+                    <% if(type=="signup") %><p><%=msg %></p>
+                    <br>
 
                     <label>Birth Date:</label>
-                    <input type="date" name="Birth Date" required><br>
+                    <input type="date" name="dob" required><br>
                     <!-- <input type="submit" placeholder="Sign Up" style="align-items: center"> -->
 
                     <div class="buttons">

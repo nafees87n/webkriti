@@ -4,8 +4,12 @@
 
 <head>
     <meta charset="UTF-8">
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    <title>CricGO!</title>
     <link rel="stylesheet" href="homepage.css">
 </head>
 
@@ -24,9 +28,15 @@
             </nav>
         </header>
         <div id="main">
+            <!-- <%= type %> -->
+            <% if(type=="signup"){ %>
+            <div id="signin" class="box" style="display: none;">
+            <% }else if(type=="login"){ %>
+            <div id="signin" class="box" style="display: block;">
+            <% }else{ %>
             <div id="signin" class="box">
-                <!-- <h1 style="text-align: center">SIGN UP</h1> -->
-
+            <% } %>
+            <!-- <div id="signin" class="box"> -->
                 <form action="/login" method="POST">
                     <h1 style="text-align: center">SIGN IN</h1>
 
@@ -38,7 +48,8 @@
                     <label>Password:
                         <input type="Password" name="password" placeholder="Enter Password" required>
                     </label>
-                    <p><%=msg %></p>
+                    <!-- <%=type%> -->
+                    <% if(type=="login") %><p><%=msg %></p>
                     <br>
 
 
@@ -54,9 +65,15 @@
                     </div>
                 </form>
             </div>
+            <!-- <%=type%> -->
+            <% if(type=="login"){ %>
+            <div id="signup" class="box" style="display: none;">
+            <% }else if(type=="signup"){ %>
+            <div id="signup" class="box" style="display: block;">
+            <% }else{ %>
             <div id="signup" class="box">
-                <!-- <h1 style="text-align: center">SIGN UP</h1> -->
-
+            <% } %>
+            <!-- <div id="signin" class="box"> -->
                 <form action="/register" method="POST">
                     <h1 style="text-align: center">SIGN UP</h1>
 
@@ -68,12 +85,16 @@
                         <input type="email" name="email" placeholder="Enter Email" required>
                     </label><br>
                     <label>Password:
-                        <input type="Password" name="password" placeholder="Enter Password" required>
+                        <input type="Password" minlength="8" name="password" placeholder="Enter Password" required>
                     </label><br>
 
                     <label>Confirm Password:
-                        <input type="Password" name="confirm" placeholder="Enter Password" required>
-                    </label><br>
+                        <input type="Password" minlength="8" name="confirm" placeholder="Enter Password" required>
+                    </label>
+                    <!-- <%=type%> -->
+                    <% if(type=="signup") %><p><%=msg %></p>
+                    <br>
+
 
                     <label>Birth Date:</label>
                     <input type="date" name="dob" required><br>
