@@ -37,7 +37,9 @@
                                 <td>Vs</td>
                                 <td><%= match[i].team2 %></td>
                                 <td><%= match[i].dom.toDateString() %></td>
-                                <td><button>BOOK</button></td>
+                                <td><form action="/agent/schedules_cancel" method="POST" onsubmit="return confirm('Do You Really Want to Cancel the Selected Match?');">
+                                    <button type="submit" name="id" value="<%= match[i].id %>">CANCEL</button>
+                                </form></td>
                             </tr> 
                             <% } %>
                     </table>

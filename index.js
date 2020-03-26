@@ -4,6 +4,8 @@ const mysql = require("mysql");
 const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
 const session = require("express-session");
+const nodemailer = require('nodemailer');
+var qrcode = require('qrcode');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static("public"));
@@ -11,10 +13,10 @@ app.use(session({
     secret: 'kpNNSM',
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 10000000 }
+    cookie: { maxAge: 1000000000000000000000000 }
 }));
-var date =new Date();
-    date=date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
+var date = new Date();
+date = date.getFullYear() + '-' + '0' + (date.getMonth() + 1) + '-' + date.getDate();
 const con = mysql.createConnection({
     host: "localhost",
     user: "root",
@@ -29,21 +31,27 @@ con.connect((err) => {
         console.log(date);
     }
 });
-
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'img_2019038@iiitm.ac.in',
+        pass: '6BQL1RAS'
+    }
+});
 app.get('/', (req, res) => {
-    let msg=req.query.msg;
-    let type=req.query.type;
+    let msg = req.query.msg;
+    let type = req.query.type;
     res.render("homepage.ejs", {
         msg: msg,
-        type:type
+        type: type
     });
 });
-app.get('/agent',(req,res)=>{
-    let msg=req.query.msg;
-    let type=req.query.type;
-    res.render("agent.ejs",{
-        msg:msg,
-        type:type
+app.get('/agent', (req, res) => {
+    let msg = req.query.msg;
+    let type = req.query.type;
+    res.render("agent.ejs", {
+        msg: msg,
+        type: type
     });
 });
 app.post('/register', (req, res) => {
@@ -56,25 +64,25 @@ app.post('/register', (req, res) => {
     var sql = ``;
     if (pass1 != pass2) {
         msg = "Passwords do not match"
-        res.render("homepage.ejs",{
-            msg:msg,
-            type:"signup"
+        res.render("homepage.ejs", {
+            msg: msg,
+            type: "signup"
         });
         return;
-    } else{
-        sql=`SELECT username,email FROM users WHERE username=? OR email=?`
-        con.query(sql,[name,email],(err,rows)=>{
-            if(rows.length){
-                if(rows[0].username.length) msg="Username already taken"
-                else if(rows[0].email.length) msg="Email already registered"
+    } else {
+        sql = `SELECT username,email FROM users WHERE username=? OR email=?`
+        con.query(sql, [name, email], (err, rows) => {
+            if (rows.length) {
+                if (rows[0].username.length) msg = "Username already taken"
+                else if (rows[0].email.length) msg = "Email already registered"
             }
-            if(rows.length){
-                res.render("homepage.ejs",{
-                    msg:msg,
-                    type:"signup"
+            if (rows.length) {
+                res.render("homepage.ejs", {
+                    msg: msg,
+                    type: "signup"
                 })
             }
-            else{
+            else {
                 bcrypt.hash(pass1, 10, function (err, hash) {
                     const h = hash;
                     const p = [[name, email, h, dob]];
@@ -95,104 +103,175 @@ app.post('/register', (req, res) => {
     }
 
 });
-app.post('/login',(req,res)=>{
-    const sql=`SELECT username,pwdhash FROM users WHERE username=?`
-    const pass=req.body.password;
-    const name=req.body.username;
-    con.query(sql,[name],(err,rows)=>{
+app.post('/login', (req, res) => {
+    const sql = `SELECT username,pwdhash FROM users WHERE username=?`
+    const pass = req.body.password;
+    const name = req.body.username;
+    con.query(sql, [name], (err, rows) => {
         // console.log(rows);
-        if(!rows.length){
+        if (!rows.length) {
             res.redirect('/?msg=Invalid User name&type=login');
         }
         else
-        bcrypt.compare(pass,rows[0].pwdhash, function(err, result) {
-            if(!result){
-                res.redirect('/?msg=Incorrect password&type=login');
-            }
-            else{
-                req.session.username=name;
-                res.redirect('/dashboard');
-            }
-        });
+            bcrypt.compare(pass, rows[0].pwdhash, function (err, result) {
+                if (!result) {
+                    res.redirect('/?msg=Incorrect password&type=login');
+                }
+                else {
+                    req.session.username = name;
+                    res.redirect('/dashboard');
+                }
+            });
     });
 });
 app.get('/dashboard', (req, res) => {
-    if(req.session.username){
-        res.statusCode=200;
-        let sql=`select * from matches`
-        con.query(sql,(err,rows)=>{
+    if (req.session.username) {
+        res.statusCode = 200;
+        let sql = `select * from matches`
+        con.query(sql, (err, rows) => {
             res.render("dashboard.ejs", {
                 user: req.session.username,
-                match:rows
+                match: rows
             });
         });
     }
-    else{
+    else {
         res.redirect('/?msg=not logged in&type=login');
     }
 });
-app.post('/dashboard/book',(req,res)=>{
-    let id=req.body.id;
-    let sql=`select * from matches where id=?`
-    con.query(sql,[id],(err,rows)=>{
-        res.render('booking.ejs',{
-            match:rows[0]
+app.post('/dashboard/book', (req, res) => {
+    let id = req.body.id;
+    console.log(id);
+    let sql = `select * from matches where id=?`
+    con.query(sql, [id], (err, rows) => {
+        res.render('booking.ejs', {
+            match: rows[0],
+            msg:""
         });
     });
 });
-app.get('/dashboard/book',(req,res)=>{
-    res.render("booking.ejs");
+app.post('/dashboard/booking', (req, res) => {
+    let id = req.body.ticket[0];
+    let stand = req.body.ticket[1];
+    console.log(req.body.ticket);
+    if (stand == "") {
+        let sql = `select * from matches where id=?`
+        con.query(sql, [id], (err, rows) => {
+            res.render('booking.ejs', {
+                match: rows[0],
+                msg: "Select a Stand By clicking on the Stadium Graphic"
+            });
+        });
+    } else {
+        let sql = `insert into booking (id,username,stand) values ?`
+        const value = [[id, req.session.username, stand]];
+        con.query(sql, [value], (err, rows) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("SUCCESS");
+                let sql = `select email from users where username=?`
+                con.query(sql, [req.session.username], (err, rows) => {
+                    qrcode.toDataURL('ID:' + id + "STAND:" + stand, function (err, url) {
+                        // console.log(url);
+                        var mailOptions = {
+                            from: 'Nafees Nehar',
+                            to: rows[0].email,
+                            subject: 'Your booked ticket.',
+                            text: `https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl=ID:${id}STAND:${stand}`
+                        };
+                        transporter.sendMail(mailOptions, function (error, info) {
+                            if (error) {
+                                console.log(error);
+                            } else {
+                                console.log('Email sent: ' + info.response);
+                                res.send("SUCCESS");
+                            }
+                        });
+                    });
+
+                });
+            }
+        });
+    }
 });
-app.get('/agent/schedules',(req,res)=>{
-    if(!req.session.username){
+// app.get('/dashboard/book/:id', (req, res) => {
+//     res.render("booking.ejs",);
+// });
+app.get('/agent/schedules', (req, res) => {
+    if (!req.session.username) {
         res.send("Not Logged in");
-    } else{
-        let sql=`select team1,team2,dom from matches where agentusername=?`
-        con.query(sql,[req.session.username],(err,rows)=>{
-            res.render("agent_schedules.ejs",{
-                user:req.session.username,
-                match:rows
+    } else {
+        let sql = `select * from matches where agentusername=?`
+        con.query(sql, [req.session.username], (err, rows) => {
+            res.render("agent_schedules.ejs", {
+                user: req.session.username,
+                match: rows
             });
         });
     }
 });
-app.get('/agent/schedules/new',(req,res)=>{
-    var msg=req.query.msg;
-    if(!req.session.username){
+app.get('/agent/schedules/new', (req, res) => {
+    var msg = req.query.msg;
+    if (!req.session.username) {
         res.send("Not Logged in");
-    } else{
-        res.render("agent_schedules_new.ejs",{
-            msg:msg
+    } else {
+        res.render("agent_schedules_new.ejs", {
+            msg: msg
         });
     }
 });
-app.post('/agent/schedules/new',(req,res)=>{
-    const team1=req.body.team1,
-          team2=req.body.team2,
-          pass=req.body.confirm,
-          dom=req.body.dom;
-    const user=req.session.username;
-    const k=[[team1,team2,dom,user]];
-    // console.log(user);
-          let sql=`select * from agents where username=?`
-          con.query(sql,[user],(err,rows)=>{
-            //   console.log(rows);
-            bcrypt.compare(pass,rows[0].pwdhash, function(err, result) {
-                if(!result){
+app.post('/agent/schedules/new', (req, res) => {
+    if (!req.session.username) {
+        res.send("Login To continue");
+    } else {
+        const team1 = req.body.team1,
+            team2 = req.body.team2,
+            pass = req.body.confirm,
+            dom = req.body.dom;
+        const user = req.session.username;
+        const k = [[team1, team2, dom, user]];
+        let sql = `select * from agents where username=?`
+        con.query(sql, [user], (_err, rows) => {
+            bcrypt.compare(pass, rows[0].pwdhash, function (err, result) {
+                if (!result) {
                     res.redirect('/agent/schedules/new?msg=Incorrect password');
                 }
-                else{
-                    let s=`insert into matches (team1,team2,dom,agentusername) values ?`
-                    con.query(s,[k],(err)=>{
-                        if(err){
-                            res.send(err);
-                        } else{
-                            res.redirect('/agent/schedules/new?msg=Added');
-                        }
-                    });
+                else {
+                    if (dom <= date) {
+                        res.redirect('/agent/schedules/new?msg=Cannot schedule for given date')
+                    }
+                    else {
+                        let s;
+                        s = `insert into matches (team1,team2,dom,agentusername) values ?`
+                        con.query(s, [k], (err) => {
+                            if (err) {
+                                res.send(err);
+                            } else {
+                                res.redirect('/agent/schedules/new?msg=Added');
+                            }
+                        });
+                    }
                 }
-              }); 
-          });         
+            });
+        });
+    }
+});
+app.post('/agent/schedules_cancel', (req, res) => {
+    if (!req.session.username) {
+        res.send("NOT LOGGED");
+    } else {
+        let id = req.body.id;
+        console.log(id);
+        let sql = `delete from matches where id=?`
+        con.query(sql, [id], (err) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.redirect('/agent/schedules?msg=Succesfully cancelled');
+            }
+        });
+    }
 });
 app.post('/agent/signup', (req, res) => {
     const name = req.body.username,
@@ -204,25 +283,25 @@ app.post('/agent/signup', (req, res) => {
     var sql = ``;
     if (pass1 != pass2) {
         msg = "Passwords do not match"
-        res.render("agent.ejs",{
-            msg:msg,
-            type:"signup"
+        res.render("agent.ejs", {
+            msg: msg,
+            type: "signup"
         });
         return;
-    }else{
-        sql=`SELECT username,email FROM agents WHERE username=? OR email=?`
-        con.query(sql,[name,email],(err,rows)=>{
-            if(rows.length){
-                if(rows[0].username.length) msg="Username already taken"
-                else if(rows[0].email.length) msg="Email already registered"
+    } else {
+        sql = `SELECT username,email FROM agents WHERE username=? OR email=?`
+        con.query(sql, [name, email], (err, rows) => {
+            if (rows.length) {
+                if (rows[0].username.length) msg = "Username already taken"
+                else if (rows[0].email.length) msg = "Email already registered"
             }
-            if(rows.length){
-                res.render("agent.ejs",{
-                    msg:msg,
-                    type:"signup"
+            if (rows.length) {
+                res.render("agent.ejs", {
+                    msg: msg,
+                    type: "signup"
                 })
             }
-            else{
+            else {
                 bcrypt.hash(pass1, 10, function (err, hash) {
                     const h = hash;
                     const p = [[name, email, h, dob]];
@@ -243,45 +322,45 @@ app.post('/agent/signup', (req, res) => {
     }
 
 });
-app.post('/agent/login',(req,res)=>{
-    const sql=`SELECT username,pwdhash FROM agents WHERE username=?`
-    const pass=req.body.password;
-    const name=req.body.username;
-    con.query(sql,[name],(err,rows)=>{
+app.post('/agent/login', (req, res) => {
+    const sql = `SELECT username,pwdhash FROM agents WHERE username=?`
+    const pass = req.body.password;
+    const name = req.body.username;
+    con.query(sql, [name], (err, rows) => {
         // console.log(rows);
-        if(!rows.length){
+        if (!rows.length) {
             res.redirect('/agent?msg=Invalid User name&type=login');
         }
-        bcrypt.compare(pass,rows[0].pwdhash, function(err, result) {
-            if(!result){
+        bcrypt.compare(pass, rows[0].pwdhash, function (err, result) {
+            if (!result) {
                 res.redirect('/agent?msg=Incorrect password&type=login');
             }
-            else{
-                req.session.username=name;
+            else {
+                req.session.username = name;
                 res.redirect('/agent/dashboard');
             }
         });
     });
 });
-app.get('/agent/dashboard',function(req,res){
-    if(req.session.username){
-        res.statusCode=200;
-        const sql=`select * from matches`
-        con.query(sql,(err,rows)=>{
-            if(err) console.log(err);
-            else{
-                res.render("agent_dashboard.ejs",{
+app.get('/agent/dashboard', function (req, res) {
+    if (req.session.username) {
+        res.statusCode = 200;
+        const sql = `select * from matches`
+        con.query(sql, (err, rows) => {
+            if (err) console.log(err);
+            else {
+                res.render("agent_dashboard.ejs", {
                     user: req.session.username,
-                    match:rows
-                }); 
+                    match: rows
+                });
             }
         });
     }
-    else{
+    else {
         res.redirect('/agent?msg=not logged in&type=login');
     }
 });
-app.get('/agent/logout',function(req,res){
+app.get('/agent/logout', function (req, res) {
     if (req.session.username) {
         req.session.destroy(() => {
             res.status = 200;

@@ -37,7 +37,9 @@
                                 <td>Vs</td>
                                 <td><%= match[i].team2 %></td>
                                 <td><%= match[i].dom.toDateString() %></td>
-                                <td><form action="/dashboard/book" method="POST"><button type="submit" name="id" value="<%= match[i].id %>">BOOK</button></form></td>
+                                <td><form action="/dashboard/book" method="POST" >
+                                    <button type="submit" name="id" value="<%= match[i].id %>">BOOK</button>
+                                </form></td>
                             </tr>
                             <!-- <tr><hr></tr> -->
                             <% } %>

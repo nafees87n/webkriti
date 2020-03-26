@@ -128,7 +128,7 @@
                                     stroke="#f7f8f9" stroke-width="1.5" fill="#b2b2b2" stroke-linejoin="miter"
                                     stroke-linecap="round" marker-start="none" marker-end="none"
                                     stroke-miterlimit="79.8403193612775" /> -->
-                                    <!-- <path class="top"
+                                <!-- <path class="top"
                                         d="M 200.738,558.961 L 312.66,556.758 L 374.898,561.592 L 554.276,557.847 L 557.158,560.986 C 495.996,615.752 441.99,626.27 377.636,626.412 C 314.497,626.552 251.797,604.052 198.774,561.692 L 200.738,558.961 Z"
                                         stroke="#f7f8f9" stroke-width="1.5" fill="#d9d9d9" stroke-linejoin="miter"
                                         stroke-linecap="round" marker-start="none" marker-end="none"
@@ -531,20 +531,26 @@
             </div>
             <div id="text">
                 <div id="box" style="text-align: center;">
+                    <h1><%=msg %></h1>
                     <h1><%= match.team1 %></h1>
                     <h1>VS</h1>
                     <h1><%= match.team2 %></h1>
                     <h1>ON</h1>
                     <h1><%= match.dom.toDateString() %></h1>
                     <h1>Click on resp. stand to select:<span id="athover"></span></h1>
-                    <button type="submit">Confirm Booking</button>
+                    <form action="/dashboard/booking" method="POST">
+                        <input type="hidden" name="ticket" value="<%= match.id %>"></input>
+                        <button id="stand" type="submit" name="ticket" value="">Confirm Booking</button>
+                    </form>
                     <br>
-                    <button type="submit">Back</button>
+                    <form action="/dashboard" method="get">
+                        <button type="submit">Back</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-    <script src="booking.js" ></script>
+    <script src="booking.js"></script>
 </body>
 
 </html>

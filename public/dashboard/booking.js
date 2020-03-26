@@ -10,16 +10,22 @@ var right=document.querySelector(".right");
 // });
 bottoml.addEventListener("click",function(){
     document.querySelector("#athover").textContent="E";
+    // var k="E"
+    document.querySelector("input").value="E";
 });
 bottomr.addEventListener("click",function(){
     document.querySelector("#athover").textContent="C";
+    document.querySelector("#stand").value="C";
 });
 bottomm.addEventListener("click",function(){
     document.querySelector("#athover").textContent="D";
+    document.querySelector("#stand").value="D";
 });
 left.addEventListener("click",function(){
     document.querySelector("#athover").textContent="F";
+    document.querySelector("#stand").value="F";
 });
 right.addEventListener("click",function(){
     document.querySelector("#athover").textContent="B";
+    document.querySelector("#stand").value="B";
 });
