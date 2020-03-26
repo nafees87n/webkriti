@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html>
-<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    <link rel="manifest" href="site.webmanifest">
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+    <link rel="manifest" href="./site.webmanifest">
     <title><%=user%></title>
-    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" type="text/css" href="agent_dashboard.css">
+
 </head>
 
 <body>
     <div class="container">
         <header>
-            <img src="cric3removed2.png" alt="logo" class="logo" height="10px">
+            <img src="./cric3removed2.png" alt="logo" class="logo" height="10px">
             <nav>
                 <ul>
-                    <li><a href="">DASHBOARD</a></li>
+                    <li><a href="/agent/dashboard">DASHBOARD</a></li>
                     <li><a href="">FIXTURES</a></li>
-                    <li><a href="">BOOKINGS</a></li>
+                    <li><a href="/agent/schedules">MY SCHEDULES</a></li>
                     <li><a href="">FAQS</a></li>
-                    <li><a href="/logout">Signout</a></li>
+                    <li><a href="/agent/logout">Signout</a></li>
                 </ul>
             </nav>
         </header>
@@ -37,14 +37,20 @@
                                 <td>Vs</td>
                                 <td><%= match[i].team2 %></td>
                                 <td><%= match[i].dom.toDateString() %></td>
-                                <td><form action="/dashboard/book" method="POST"><button type="submit" name="id" value="<%= match[i].id %>">BOOK</button></form></td>
+                                <!-- <td><button>BOOK</button></td> -->
                             </tr>
                             <!-- <tr><hr></tr> -->
                             <% } %>
                     </table>
                 </div>
+
             </div>
+            <!-- <div id="menu">
+                <button class="buttono">New Schedule</button>
+                <button class="buttono">Cancel</button>
+            </div> -->
         </div>
     </div>
 </body>
+
 </html>

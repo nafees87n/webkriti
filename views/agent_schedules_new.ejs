@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    <title>CricGO!</title>
+    <link rel="stylesheet" href="agent_schedules_new.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <img src="../cric3removed2.png" alt="logo" class="logo" height="10px"/>
+            <p></p>
+            <nav>
+                <ul>
+                    <li><a href="/">HOME</a></li>
+                    <li><a href="">FIXTURES</a></li>
+                    <li><a href="">FAQS</a></li>
+                    <!-- <li><a href="">PROFILE</a></li> -->
+                </ul>
+            </nav>
+        </header>
+        <div id="main">
+            <div id="signin" class="box">
+                <form action="/agent/schedules/new" method="POST">
+                    <h1 style="text-align: center">NEW SCHEDULE</h1>
+
+                    <label>Team 1:
+                        <input type="text" name="team1" placeholder="Enter Team 1" required>
+                    </label><br>
+
+                    <label>Team 2:
+                        <input type="text" name="team2" placeholder="Enter Team 2" required>
+                    </label><br>
+
+                    <label>Confirm Password:
+                        <input type="Password" minlength="8" name="confirm" placeholder="Enter Password" required>
+                    </label>
+                    
+                    <p><%=msg %></p>
+                    <br>
+
+
+                    <label>Date:</label>
+                    <input type="date" name="dom" required><br>
+
+                    <div class="buttons">
+                        <button type="submit" class="subbut">Schedule</button>
+                        <!-- <p class="up_in">Sign In</p>
+                        <p class="apage"><a href="/agent" class="apage"><span class="apage">Agent Login</span></a></p> -->
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        var insign = document.getElementById("signin");
+        var up = document.getElementById("signup");
+        document.querySelector(".in_up").addEventListener("click", () => {
+            insign.style.display = "none";
+            up.style.display = "block";
+            // document.querySelector(".in_up").textContent="hey";
+        });
+        document.querySelector(".up_in").addEventListener("click", () => {
+            insign.style.display = "block";
+            up.style.display = "none";
+            // document.querySelector(".in_up").textContent="hey";
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+#container{
+    display: flex;
+}
+
+#logo{
+    height: 13vh;
+}
+
+#head{
+    background :#55d6aa;
+    height: 12vh;
+    display: flex;
+    justify-content: space-between;
+}
+nav{
+    
+    padding: 0 3vw;
+}
+nav ul{
+    margin : 0;
+    padding : 0;
+    list-style: none;
+}
+nav li{
+    display : inline-block; 
+    margin-left : 70px;
+    margin-top : 25px;
+    padding-top:25px;
+    padding-bottom: 10px;
+    padding-left : 5px; 
+    position: relative;
+}
+nav a{
+    color:whitesmoke;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+nav a :hover{
+    color: black;
+}
+nav a::before{
+    content:'';
+    display: block;
+    height : 5px;
+    background-color:whitesmoke;
+    position : absolute;
+    top:0;
+    width:0;
+    transition: all ease-in-out 1s;
+}
+nav a:hover::before{
+    width : 100%;
+}
+#main{
+    display: flex;
+    flex-direction: row;
+    height: 88vh;
+    /* align-items: center; */
+}
+#stadium{
+    /* background-color: blue; */
+    width: 40vw;
+    align-self: center;
+}
+#text{
+    background: red;
+    width: 60vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#box{
+    background: yellow;
+    width: 40vw;
+    height: 60vh;
+}
+.bottom_left:hover,.bottom_right:hover,.bottom_mid:hover,.left:hover,.right:hover,.top:hover{
+    fill:black;
+    cursor: pointer;
+}
