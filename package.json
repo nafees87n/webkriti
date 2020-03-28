@@ -1,11 +1,11 @@
 {
   "name": "webkriti",
   "version": "1.0.0",
-  "description": "Whatsup Guys...... In Case of any difficulty contact/reach 209 ASAP.... start by git pull Before adding anything create a new branch by git branch<newbranchname> then git checkout <newbranch> then add to the new branch",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -26,8 +26,7 @@
     "express-session": "^1.17.0",
     "mysql": "^2.18.1",
     "node": "^13.10.1",
-    "nodemailer": "^6.4.6",
-    "qrcode": "^1.4.4"
+    "nodemailer": "^6.4.6"
   },
   "devDependencies": {
     "nodemon": "^2.0.2"

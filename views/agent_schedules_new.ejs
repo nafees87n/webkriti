@@ -9,24 +9,52 @@
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="manifest" href="site.webmanifest">
     <title>CricGO!</title>
-    <link rel="stylesheet" href="agent_schedules_new.css">
+    <link rel="stylesheet" href="homepage.css">
 </head>
 
 <body>
     <div class="container">
         <header>
-            <img src="../cric3removed2.png" alt="logo" class="logo" height="10px"/>
+            <div id="head">
+                <img src="../cric3removed2.png" alt="logo" class="logo" height="10px"/>
             <p></p>
-            <nav>
-                <ul>
-                    <li><a href="/">HOME</a></li>
-                    <li><a href="">FIXTURES</a></li>
-                    <li><a href="">FAQS</a></li>
-                    <!-- <li><a href="">PROFILE</a></li> -->
-                </ul>
-            </nav>
+            <div id="oldnav">
+                <nav>
+                    <ul>
+                        <li><a href="/agent/dashboard">DASHBOARD</a></li>
+                        <!-- <li><a href="agent/fixtures">FIXTURES</a></li> -->
+                        <li><a href="/agent/schedules">MY SCHEDULES</a></li>
+                        <!-- <li><a href="">FAQ</a></li> -->
+                        <li><a href="/agent/logout">LOGOUT</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div id="newnav">
+                <!-- <a href="javascript:void(0);" class="icon" onclick="myFunction()"> -->
+                    <div class="hamburger">
+                        <div id="line1"></div>
+                        <div id="line2"></div>
+                        <div id="line3"></div>
+                    </div>
+                <!-- </a> -->
+            </div>
+            </div>
+            
         </header>
         <div id="main">
+            <div class="topnavtoggle topnav">
+                <nav>
+                    <p><a class="ham" href="/agent/dashboard">DASHBOARD</a></p><br>
+                    <!-- <p><a class="ham" href="/agent/fixtures">FIXTURES</a></p><br> -->
+                    <p><a class="ham" href="/agent/schedules">MY SCHEDULES</a></p><br>
+                    <!-- <p><a class="ham" href="">FAQS</a></p><br> -->
+                    <p><a class="ham" href="/agent/logout">LOGOUT</a></p><br>
+                </nav>
+
+                <!-- <li><a href="">PROFILE</a></li> -->
+            </div>
+        </div>
+        <!-- <div id="main"> -->
             <div id="signin" class="box">
                 <form action="/agent/schedules/new" method="POST">
                     <h1 style="text-align: center">NEW SCHEDULE</h1>
@@ -57,21 +85,24 @@
                     </div>
                 </form>
             </div>
-        </div>
+        <!-- </div> -->
     </div>
     <script>
-        var insign = document.getElementById("signin");
-        var up = document.getElementById("signup");
-        document.querySelector(".in_up").addEventListener("click", () => {
-            insign.style.display = "none";
-            up.style.display = "block";
-            // document.querySelector(".in_up").textContent="hey";
-        });
-        document.querySelector(".up_in").addEventListener("click", () => {
-            insign.style.display = "block";
-            up.style.display = "none";
-            // document.querySelector(".in_up").textContent="hey";
-        });
+        
+        var x = document.querySelector(".topnavtoggle");
+                        var flag = false;
+                        document.querySelector("#newnav").addEventListener("click", function () {
+                            if (!flag) {
+                                x.classList.remove("topnavtoggle");
+                                x.classList.add("topnavnaf");
+                                flag = true;
+                            } else {
+                                x.classList.add("topnavtoggle");
+                                x.classList.remove("topnavnaf");
+                                flag = false;
+                            }
+
+                        });
     </script>
 
 </body>

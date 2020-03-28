@@ -144,7 +144,7 @@ h1{
     padding-bottom:5vh;
     color:whitesmoke;
     /* background:linear-gradient(to top,rgba(0,114,196,1),rgba(0,114,196,0)); */
-    background-image:linear-gradient(to top,rgba(68,131,224,1),rgba(68,131,224,0)),url(https://resources.pulse.icc-cricket.com/ICC/teams/header/men/IND.png);
+    /* background-image:linear-gradient(to top,rgba(68,131,224,1),rgba(68,131,224,0)),url(https://resources.pulse.icc-cricket.com/ICC/teams/header/men/IND.png); */
     border: black;
         border-style:solid;
         border-radius:5vh;
@@ -159,7 +159,7 @@ h1{
     justify-content: center;
     align-items: flex-end;
     color:whitesmoke;
-    background-image:linear-gradient(to top,rgba(0,74,15,1),rgba(0,74,15,0)),url(https://resources.pulse.icc-cricket.com/ICC/teams/header/men/PAK.png);
+    /* background-image:linear-gradient(to top,rgba(0,74,15,1),rgba(0,74,15,0)),url(https://resources.pulse.icc-cricket.com/ICC/teams/header/men/PAK.png); */
     background-position: center;
     border: black;
         border-style:solid;

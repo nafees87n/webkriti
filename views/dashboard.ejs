@@ -20,33 +20,33 @@
             <div id="oldnav">
                 <nav>
                     <ul>
-                        <li><a href="">DASHBOARD</a></li>
-                        <li><a href="">FIXTURES</a></li>
-                        <li><a href="">MY BOOKINGS</a></li>
-                        <li><a href="">FAQS</a></li>
+                        <li><a href="/dashboard">DASHBOARD</a></li>
+                        <li><a href="/fixtures">FIXTURES</a></li>
+                        <li><a href="/mybookings">MY BOOKINGS</a></li>
+                        <!-- <li><a href="">FAQS</a></li> -->
                         <li><a href="/logout">Signout</a></li>
                     </ul>
                 </nav>
             </div>
 
             <div id="newnav">
-                <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-                    <div class="hamburger" onclick="myFunction()">
+                <!-- <a href="javascript:void(0);" class="icon" onclick="myFunction()"> -->
+                    <div class="hamburger">
                         <div id="line1"></div>
                         <div id="line2"></div>
                         <div id="line3"></div>
                     </div>
-                </a>
+                <!-- </a> -->
             </div>
         </header>
         <div id="main">
             <div class="topnavtoggle topnav">
                 <nav>
-                    <p><a class="ham" href="/">DASHBOARD</a></p><br>
-                    <p><a class="ham" href="">FIXTURES</a></p><br>
-                    <p><a class="ham" href="">MY BOOKINGS</a></p><br>
-                    <p><a class="ham" href="">FAQS</a></p><br>
-                    <p><a class="ham" href="">SIGNOUT</a></p><br>
+                    <p><a class="ham" href="/dashboard">DASHBOARD</a></p><br>
+                    <p><a class="ham" href="/fixtures">FIXTURES</a></p><br>
+                    <p><a class="ham" href="/mybookings">MY BOOKINGS</a></p><br>
+                    <!-- <p><a class="ham" href="">FAQS</a></p><br> -->
+                    <p><a class="ham" href="/logout">SIGNOUT</a></p><br>
                 </nav>
 
                 <!-- <li><a href="">PROFILE</a></li> -->
@@ -57,11 +57,55 @@
                 <div id="content">
                     <h1 style="text-align: center;"><%=msg%></h1>
                     <table>
-                        <% for(var i=0;i<3 ; i++){ %>
+                        <% for(var i=0;i<match.length ; i++){ %>
                         <tr>
-                            <td><%= match[i].team1 %></td>
+                            <% if(match[i].team1=="INDIA") { %>
+                                <td><img src="bcci.jpg"> <%= match[i].team1 %></td>  
+                            <% } else if(match[i].team1=="BANGLADESH") { %>
+                                <td><img src="ban.png"> <%= match[i].team1 %></td>
+                            <% } else if(match[i].team1=="SRI LANKA" || match[i].team1=="SRILANKA") { %>
+                                 <td><img src="sl.png"> <%= match[i].team1 %></td>
+                            <% } else if(match[i].team1=="PAKISTAN") { %>
+                                 <td><img src="pcb.png"> <%= match[i].team1 %></td>
+                            <% } else if(match[i].team1=="NEW ZEALAND") { %>
+                                 <td><img src="nz.png"> <%= match[i].team1 %></td>
+                            <% } else if(match[i].team1=="NEWZEALAND") { %>
+                                 <td><img src="nz.png"> <%= match[i].team1 %></td>
+                            <% } else if(match[i].team1=="ENGLAND") { %>
+                                 <td><img src="ecb.png"> <%= match[i].team1 %></td>
+                            <% } else if(match[i].team1=="WESTINDIES") { %>
+                                 <td><img src="wi.png"> <%= match[i].team1 %></td>
+                            <% } else if(match[i].team1=="WEST INDIES") { %>
+                                 <td><img src="wi.png"> <%= match[i].team1 %></td>
+                            <% } else if(match[i].team1=="AFGHANISTAN") { %>
+                                 <td><img src="afg.png"> <%= match[i].team1 %></td>
+                            <% } else if(match[i].team1=="AUSTRALIA") { %>
+                                 <td><img src="cric_aus.png"> <%= match[i].team1 %></td>
+                            <% } else if(match[i].team1=="SOUTH AFRICA") { %>
+                                 <td><img src="sa.jfif"> <%= match[i].team1 %></td>
+                            <% } else if(match[i].team1=="SOUTHAFRICA") { %>
+                                 <td><img src="sa.jfif"> <%= match[i].team1 %></td>
+                            <% } else { %>
+                                <td><img src="unknown_team_1.png"> <%= match[i].team1 %></td>
+                            <% } %>
                             <td>Vs</td>
-                            <td><%= match[i].team2 %></td>
+                            <% if(match[i].team2=="INDIA") { %><td><img src="bcci.jpg"><%= match[i].team2 %></td>
+                            <% }else if(match[i].team2=="BANGLADESH"){ %><td><img src="ban.png"> <%= match[i].team2 %></td>
+                            <% }else if(match[i].team2=="SRILANKA"){ %><td><img src="sl.png"> <%= match[i].team2 %></td>
+                            <% }else if(match[i].team2=="SRILANKA"){ %><td><img src="sl.png"> <%= match[i].team2 %></td>
+                            <% }else if(match[i].team2=="PAKISTAN") {%><td><img src="pcb.png"> <%= match[i].team2 %></td>
+                            <% }else if(match[i].team2=="NEW ZEALAND") {%><td><img src="nz.png"> <%= match[i].team2 %></td>
+                            <% }else if(match[i].team2=="NEWZEALAND") {%><td><img src="nz.png"> <%= match[i].team2 %></td>
+                            <% }else if(match[i].team2=="ENGLAND") {%><td><img src="ecb.png"> <%= match[i].team2 %></td>
+                            <% }else if(match[i].team2=="WESTINDIES") {%><td><img src="wi.png"> <%= match[i].team2 %></td>
+                            <% }else if(match[i].team2=="WEST INDIES") {%><td><img src="wi.png"> <%= match[i].team2 %></td>
+                            <% }else if(match[i].team2=="AFGHANISTAN") {%><td><img src="afg.png"> <%= match[i].team2 %></td>
+                            <% }else if(match[i].team2=="AUSTRALIA") {%><td><img src="cric_aus.png"> <%= match[i].team2 %></td>
+                            <% }else if(match[i].team2=="SOUTH AFRICA") {%><td><img src="sa.jfif"> <%= match[i].team2 %></td>
+                            <% }else if(match[i].team2=="SOUTHAFRICA") {%><td><img src="sa.jfif"> <%= match[i].team2 %></td>
+                            <% }else {%>
+                                <td><img src="unknown_team_2.png"> <%= match[i].team2 %></td>
+                            <% } %>    
                             <td><%= match[i].dom.toDateString() %></td>
                             <td>
                                 <form action="/dashboard/book" method="POST">
@@ -69,7 +113,6 @@
                                 </form>
                             </td>
                         </tr>
-                        <!-- <tr><hr></tr> -->
                         <% } %>
                     </table>
                 </div>

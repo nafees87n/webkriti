@@ -28,6 +28,12 @@
         </div>
         <div id="main">
             <div id="stadium">
+                <h2>Availability</h2>
+                <p>Stand B:<%= avail[0].availability %></p>
+                <p>Stand C:<%= avail[1].availability %></p>
+                <p>Stand D:<%= avail[2].availability %></p>
+                <p>Stand E:<%= avail[3].availability %></p>
+                <p>Stand F:<%= avail[4].availability %></p>
                 <svg stroke-width="0.501" stroke-linejoin="bevel" fill-rule="evenodd"
                     xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" version="1.1"
                     overflow="visible" width="400pt" height="400pt" viewBox="0 0 712.5 637.5">
@@ -536,7 +542,30 @@
                 <p style="text-align: center;">CLICK on your desired stand</p>
             </div>
             <div id="text" style="text-align: center;">
-                <div id="team1">
+                <% if(match.team1=="INDIA") { %>
+                <div id="team1" style="background-image:linear-gradient(to top,rgba(68, 131, 224,1),rgba(68, 131, 224,0)),url(https://resources.pulse.icc-cricket.com/ICC/teams/header/men/IND.png);">
+                    <% }else if(match.team1=="PAKISTAN") { %>
+                        <div id="team1" style="background-image:linear-gradient(to top,rgba(0,74,15,1),rgba(0,74,15,0))),url(https://resources.pulse.icc-cricket.com/ICC/teams/header/men/PAK.png);">
+                    <% }else if(match.team1=="AFGHANISTAN") { %>
+                        <div id="team1" style="background-image:linear-gradient(to top,rgba(46,143,253,1),rgba(46,143,253,0)),url(https://resources.pulse.icc-cricket.com/ICC/teams/header/men/AFG.png);">
+                    <% }else if(match.team1=="ENGLAND") { %>
+                        <div id="team1" style="background-image:linear-gradient(to top,rgba(0,74,15,1),rgba(0,74,15,0)),url(https://resources.pulse.icc-cricket.com/ICC/teams/header/men/ENG.png);">
+                    <% }else if(match.team1=="NEW ZEALAND") { %>
+                        <div id="team1" style="background-image:linear-gradient(to top,rgba(43,43,43,1),rgba(43,43,43,0)),url(https://resources.pulse.icc-cricket.com/ICC/teams/header/men/NZ.png);">
+                    <% }else if(match.team1=="AUSTRALIA") { %>
+                        <div id="team1" style="background-image:linear-gradient(to top,rgba(251,205,47,1),rgba(251,205,47,0)),url('https://resources.pulse.icc-cricket.com/ICC/teams/header/men/AUS.png');">
+                    <% }else if(match.team1=="BANGLADESH") { %>
+                        <div id="team1" style="background-image:linear-gradient(to top,rgba(0,159,148,1),rgba(0,159,148,0)),url(https://resources.pulse.icc-cricket.com/ICC/teams/header/men/BAN.png);">
+                    <% }else if(match.team1=="SRI LANKA") { %>
+                        <div id="team1" style="background-image:linear-gradient(to top,rgba(0,172,215,1),rgba(0,172,215,0)),url(https://resources.pulse.icc-cricket.com/ICC/teams/header/men/SL.png);">
+                    <% }else if(match.team1=="WEST INDIES") { %>
+                        <div id="team1" style="background-image:linear-gradient(to top,rgba(126,16,62,1),rgba(126,16,62,0)),url(https://resources.pulse.icc-cricket.com/ICC/teams/header/men/WI.png);">
+                    <% }else if(match.team1=="SOUTH AFRICA") { %>
+                        <div id="team1" style="background-image:linear-gradient(to top,rgba(70,142,62,1),rgba(70,142,62,0)),url(https://resources.pulse.icc-cricket.com/ICC/teams/header/men/SA.png);">
+                    <% }else{ %>
+                        <div id="team1" style="background-image:linear-gradient(to top,rgba(0,0,0,1),rgba(0,0,0,0)),url(unknown_team_2.jpg);">
+                    <% } %>
+                    <p><%= msg %></p>
                     <h1><%= match.team1 %></h1>
                 </div>
 
@@ -545,15 +574,38 @@
                     <p><b>Stand:</b><span id="athover"></span></p>
                     <div class="buttons">
                         <form action="/dashboard/booking" method="POST">
-                            
-                            <p><a href=""><span id="cnf"><button type="submit" name="ticket" value="<%= match.id %>">Confirm</button> </span></a></p><br>
+
+                            <p><a href=""><span id="cnf"><button type="submit" name="ticket"
+                                            value="<%= match.id %>">Confirm</button> </span></a></p><br>
                             <input type="hidden" id="stand" name="ticket"> </input>
                             <p><a href="/dashboard"><span id="back">Back</span></a></p>
                         </form>
                     </div>
                 </div>
-
-                <div id="team2" style="background-image:linear-gradient(to top,rgba(0,74,15,1)),url(https://resources.pulse.icc-cricket.com/ICC/teams/header/men/PAK.png);">
+                <% if(match.team2=="INDIA") { %>
+                    <div id="team2" style="background-image:linear-gradient(to top,rgba(68, 131, 224,1),rgba(68, 131, 224,0)),url(https://resources.pulse.icc-cricket.com/ICC/teams/header/men/IND.png);">
+                        <% }else if(match.team2=="PAKISTAN") { %>
+                            <div id="team2" style="background-image:linear-gradient(to top,rgba(0,74,15,1),rgba(0,74,15,0)),url(https://resources.pulse.icc-cricket.com/ICC/teams/header/men/PAK.png);">
+                        <% }else if(match.team2=="AFGHANISTAN") { %>
+                            <div id="team2" style="background-image:linear-gradient(to top,rgba(46,143,253,1),rgba(46,143,253,0)),url(https://resources.pulse.icc-cricket.com/ICC/teams/header/men/AFG.png);">
+                        <% }else if(match.team2=="ENGLAND") { %>
+                            <div id="team2" style="background-image:linear-gradient(to top,rgba(0,74,15,1),rgba(0,74,15,0)),url(https://resources.pulse.icc-cricket.com/ICC/teams/header/men/ENG.png);">
+                        <% }else if(match.team2=="NEW ZEALAND") { %>
+                            <div id="team2" style="background-image:linear-gradient(to top,rgba(43,43,43,1),rgba(43,43,43,0)),url(https://resources.pulse.icc-cricket.com/ICC/teams/header/men/NZ.png);">
+                        <% }else if(match.team2=="AUSTRALIA") { %>
+                            <div id="team2" style="background-image:linear-gradient(to top,rgba(251,205,47,1),rgba(251,205,47,0)),url(https://resources.pulse.icc-cricket.com/ICC/teams/header/men/AUS.png);">
+                        <% }else if(match.team2=="BANGLADESH") { %>
+                            <div id="team2" style="background-image:linear-gradient(to top,rgba(0,159,148,1),rgba(0,159,148,0)),url(https://resources.pulse.icc-cricket.com/ICC/teams/header/men/BAN.png);">
+                        <% }else if(match.team2=="SRI LANKA") { %>
+                            <div id="team2" style="background-image:linear-gradient(to top,rgba(0,172,215,1),rgba(0,172,215,0)),url(https://resources.pulse.icc-cricket.com/ICC/teams/header/men/SL.png);">
+                        <% }else if(match.team2=="WEST INDIES") { %>
+                            <div id="team2" style="background-image:linear-gradient(to top,rgba(126,16,62,1),rgba(126,16,62,0)),url(https://resources.pulse.icc-cricket.com/ICC/teams/header/men/WI.png);">
+                        <% }else if(match.team2=="SOUTH AFRICA") { %>
+                            <div id="team2" style="background-image:linear-gradient(to top,rgba(70,142,62,1),rgba(70,142,62,0)),url(https://resources.pulse.icc-cricket.com/ICC/teams/header/men/SA.png);">
+                        <% }else{ %>
+                            <div id="team2" style="background-image:linear-gradient(to top,rgba(0,0,0,1),rgba(0,0,0,0)),url(unknown_team_1.jpg);">
+                        <% } %>
+                
                     <h1><%= match.team2 %></h1>
                 </div>
             </div>

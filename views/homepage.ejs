@@ -23,20 +23,20 @@
                     <nav>
                         <ul>
                             <li><a href="/">HOME</a></li>
-                            <li><a href="">FIXTURES</a></li>
-                            <li><a href="">FAQS</a></li>
+                            <!-- <li><a href="">FIXTURES</a></li> -->
+                            <!-- <li><a href="/faqs.pdf">FAQS</a></li> -->
                             <!-- <li><a href="">PROFILE</a></li> -->
                         </ul>
                     </nav>
                 </div>
                 <div id="newnav">
-                    <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                    <!-- <a href="javascript:void(0);" class="icon" onclick="myFunction()"> -->
                         <div class="hamburger" onclick="myFunction()">
                             <div id="line1"></div>
                             <div id="line2"></div>
                             <div id="line3"></div>
                         </div>
-                    </a>
+                    <!-- </a> -->
                 </div>
             </div>
         </header>
@@ -44,8 +44,8 @@
             <div class="topnavtoggle topnav">
                 <nav>
                     <p><a class="ham" href="/">HOME</a></p><br>
-                    <p><a class="ham" href="">FIXTURES</a></p><br>
-                    <p><a class="ham" href="">FAQS</a></p><br>
+                    <!-- <p><a class="ham" href="">FIXTURES</a></p><br> -->
+                    <!-- <p><a class="ham" href="/faqs.pdf">FAQS</a></p><br> -->
                 </nav>
 
                 <!-- <li><a href="">PROFILE</a></li> -->
@@ -140,7 +140,7 @@
                     <script>
                         var insign = document.getElementById("signin");
                         var up = document.getElementById("signup");
-                        var x = document.querySelector(".topnavtoggle");
+                        
                         document.querySelector(".in_up").addEventListener("click", () => {
                             insign.style.display = "none";
                             up.style.display = "block";
@@ -151,6 +151,7 @@
                             up.style.display = "none";
                             // document.querySelector(".in_up").textContent="hey";
                         });
+                        var x = document.querySelector(".topnavtoggle");
                         var flag = false;
                         document.querySelector("#newnav").addEventListener("click", function () {
                             if (!flag) {

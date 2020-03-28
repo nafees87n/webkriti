@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
 const session = require("express-session");
 const nodemailer = require('nodemailer');
-var qrcode = require('qrcode');
+var fs = require('fs');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static("public"));
@@ -13,23 +13,23 @@ app.use(session({
     secret: 'kpNNSM',
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 1000000000000000000000000 }
+    cookie: { maxAge: 2*60*60*1000 }
 }));
 var date = new Date();
-// console.log(k+7);
+// if(date.getDate()) console.log('0'+date.getDate())
 var today = date.getFullYear() + '-' + '0' + (date.getMonth() + 1) + '-' + date.getDate();
 const con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "mySql@123",
-    database: "webkriti"
+    host: "sql12.freemysqlhosting.net",
+    user: "sql12329225",
+    password: "7xxPLuIkcU",
+    database: "sql12329225"
 });
 
 con.connect((err) => {
     if (err) console.log(err);
     else {
         console.log("Database Connected!\n");
-        console.log(today);
+        // console.log(today);
     }
 });
 {
@@ -39,8 +39,8 @@ con.connect((err) => {
 var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'img_2019038@iiitm.ac.in',
-        pass: '6BQL1RAS'
+        user: 'cricgoofficial@gmail.com',
+        pass: 'Password@123'
     }
 });
 app.get('/', (req, res) => {
@@ -51,6 +51,13 @@ app.get('/', (req, res) => {
         type: type
     });
 });
+app.get('/faq',(req,res)=>{
+    fs.readFile('faq.pdf', function(err, data) {
+        // res.writeHead(200, {'Content-Type': 'text/html'});
+        // res.write(data);
+        res.end();
+      });
+})
 app.get('/agent', (req, res) => {
     let msg = req.query.msg;
     let type = req.query.type;
@@ -130,47 +137,83 @@ app.post('/login', (req, res) => {
     });
 });
 app.get('/dashboard', (req, res) => {
-    let msg=req.query.msg;
-    let d=date.getDate()+7;
-    if(d>31){
-        if((date.getMonth()+1)==1 || (date.getMonth()+1)==3 ||(date.getMonth()+1)==5 ||(date.getMonth()+1)==7 ||(date.getMonth()+1)==8||(date.getMonth()+1)==10||(date.getMonth()+1)==12 ){
-            d=d-31;
-            var date1=date.getFullYear() + '-' + '0' + (date.getMonth() + 2) + '-' + d;
-        }else{
-            d=d-30;
-            var date1=date.getFullYear() + '-' + '0' + (date.getMonth() + 2) + '-' + d;
-        }
-    }
-    else{
-        var date1=today;
-    }
+    let msg = req.query.msg;
+    var nextweek = new Date(date.getTime() + 7 * 24 * 60 * 60 * 1000);
+    if (nextweek.getDate() >= 10) nextweek = nextweek.getFullYear() + '-' + '0' + (nextweek.getMonth() + 1) + '-' + nextweek.getDate();
+    else nextweek = nextweek.getFullYear() + '-' + '0' + (nextweek.getMonth() + 1) + '-' + '0' + nextweek.getDate();
     if (req.session.username) {
         res.statusCode = 200;
-        let sql = `select * from matches where dom<=${date1}`
-        con.query(sql, (err, rows) => {
+        let sql = "select * from matches where dom<=? order by dom;"
+        con.query(sql, [nextweek], (err, rows) => {
             res.render("dashboard.ejs", {
                 user: req.session.username,
                 match: rows,
-                msg:msg
+                msg: msg
             });
+            console.log(rows);
         });
     }
     else {
-        res.redirect('/?msg=not logged in&type=login');
+        res.redirect('/?msg=You are Not Logged in!! limited seats &type=login');
     }
 });
+app.get('/fixtures', (req, res) => {
+    var nextweek = new Date(date.getTime() + 7 * 24 * 60 * 60 * 1000);
+    if (nextweek.getDate() >= 10) nextweek = nextweek.getFullYear() + '-' + '0' + (nextweek.getMonth() + 1) + '-' + nextweek.getDate();
+    else nextweek = nextweek.getFullYear() + '-' + '0' + (nextweek.getMonth() + 1) + '-' + '0' + nextweek.getDate();
+    if (!req.session.username) {
+        res.redirect('/?msg=You are not logged in!!');
+    }
+    else {
+        let sql = `select * from matches where dom<=? order by dom`;
+        con.query(sql, [nextweek], (err, rows) => {
+            let k = `select * from matches where dom>? order by dom`;
+            con.query(k, [nextweek], (err, result) => {
+                res.render("fixtures.ejs", {
+                    msg: "",
+                    match: rows,
+                    non: result,
+                    user: req.session.user
+                });
+            })
+        });
+    }
+});
+app.get('/mybookings', (req, res) => {
+    if (!req.session.username) {
+        res.redirect('/?msg=You are not logged in!!');
+    }
+    else {
+        let sql = `select id from booking where username=?`
+        con.query(sql, [req.session.username], (err, rows) => {
+            let k = `select * from matches where id=?`
+            con.query(k, [rows[0].id], (err, result) => {
+                res.render("mybookings.ejs", {
+                    msg: "",
+                    user: req.session.username,
+                    match: result
+                })
+            })
+        })
+    }
+})
 app.post('/dashboard/book', (req, res) => {
     if (req.session.username) {
         let id = req.body.id;
         console.log(id);
         let sql = `select * from matches where id=?`
         con.query(sql, [id], (err, rows) => {
-            res.render('booking.ejs', {
-                match: rows[0],
-                msg: ""
+            let sql2 = `select * from stand where id=?`
+            con.query(sql2, [id], (err, result) => {
+                // if(err) console.log(err);
+                res.render('booking.ejs', {
+                    match: rows[0],
+                    msg: "",
+                    avail: result
+                });
             });
         });
-    }else{
+    } else {
         res.redirect('/?msg=not logged in&type=login');
     }
 
@@ -183,45 +226,73 @@ app.post('/dashboard/booking', (req, res) => {
     if (stand == "") {
         let sql = `select * from matches where id=?`
         con.query(sql, [id], (err, rows) => {
-            res.render('booking.ejs', {
-                match: rows[0],
-                msg: "Select a Stand By clicking on the Stadium Graphic"
-            });
+            con.query(`select * from stand where id=?`, [id], (err, r) => {
+                res.render('booking.ejs', {
+                    match: rows[0],
+                    msg: "Select a Stand By clicking on the Stadium Graphic",
+                    avail: r
+                });
+            })
+
         });
     } else {
-        let sql = `insert into booking (id,username,stand) values ?`
-        const value = [[id, req.session.username, stand]];
-        con.query(sql, [value], (err, rows) => {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log("SUCCESS");
-                let sql = `select email from users where username=?`
-                con.query(sql, [req.session.username], (err, rows) => {
-                    // qrcode.toDataURL('ID:' + id + "STAND:" + stand, function (err, url) {
-                    // console.log(url);
-                    // let img=qrcode.toDataURL(`ID:${id}STAND:${stand}`);
-                    var mailOptions = {
-                        from: 'Nafees Nehar',
-                        to: rows[0].email,
-                        subject: 'Your booked ticket.',
-                        // text: `https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl=ID:${id}STAND:${stand}`
-                        text: "Your QRCODE",
-                        html: `<img src=https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl=ID:${id}STAND:${stand}/>`
-                    };
-                    transporter.sendMail(mailOptions, function (error, info) {
-                        if (error) {
-                            console.log(error);
-                        } else {
-                            console.log('Email sent: ' + info.response);
-                            res.redirect("/dashboard?msg=Booking Successfull");
-                        }
-                    });
-                    // });
+        con.query(`select * from stand where id=? and standname=?`, [id, stand], (err, rst) => {
+            if (!rst[0].availability) {
+                let sql = `select * from matches where id=?`
+                con.query(sql, [id], (err, rows) => {
+                    con.query(`select * from stand where id=?`, [id], (err, r) => {
+                        res.render('booking.ejs', {
+                            match: rows[0],
+                            msg: "Seat Not Available In That Stand",
+                            avail: r
+                        });
+                    })
 
                 });
+            } else {
+                let sql1 = `update stand set availability=? where standname=? and id=?`
+                con.query('select * from stand where id=? and standname=?', [id, stand], (err, avail) => {
+                    con.query(sql1, [avail[0].availability - 1, stand, id], (err) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                    })
+                })
+                let sql = `insert into booking (id,username,stand) values ?`
+                const value = [[id, req.session.username, stand]];
+                con.query(sql, [value], (err, rows) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log("SUCCESS");
+                        let sql = `select email from users where username=?`
+                        con.query(sql, [req.session.username], (err, rows) => {
+                            // qrcode.toDataURL('ID:' + id + "STAND:" + stand, function (err, url) {
+                            // console.log(url);
+                            // let img=qrcode.toDataURL(`ID:${id}STAND:${stand}`);
+                            var mailOptions = {
+                                from: 'Nafees Nehar',
+                                to: rows[0].email,
+                                subject: 'Your booked ticket.',
+                                // text: `https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl=ID:${id}STAND:${stand}`
+                                html: `<p>Dear ${req.session.username},</p>Congratulations! Your seat has been confirmed.We hope that you will have an amazing time. Details of your booking are as follows.</p><p>Match ID: ${id}</p><p>Stand No:${stand}</p><p>Please carry a valid ID at the time of arrival.</p><img src=https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl=ID:${id}STAND:${stand}/>`
+                            };
+                            transporter.sendMail(mailOptions, function (error, info) {
+                                if (error) {
+                                    console.log(error);
+                                } else {
+                                    console.log('Email sent: ' + info.response);
+                                    res.redirect("/dashboard?msg=Booking Successfull");
+                                }
+                            });
+                            // });
+
+                        });
+                    }
+                });
             }
-        });
+        })
+
     }
 });
 // app.get('/dashboard/book/:id', (req, res) => {
@@ -254,12 +325,12 @@ app.post('/agent/schedules/new', (req, res) => {
     if (!req.session.username) {
         res.send("Login To continue");
     } else {
-        const team1 = req.body.team1,
+        var team1 = req.body.team1,
             team2 = req.body.team2,
             pass = req.body.confirm,
             dom = req.body.dom;
         const user = req.session.username;
-        const k = [[team1, team2, dom, user]];
+        const k = [[team1.toUpperCase(), team2.toUpperCase(), dom, user]];
         let sql = `select * from agents where username=?`
         con.query(sql, [user], (_err, rows) => {
             bcrypt.compare(pass, rows[0].pwdhash, function (err, result) {
@@ -273,13 +344,26 @@ app.post('/agent/schedules/new', (req, res) => {
                     else {
                         let s;
                         s = `insert into matches (team1,team2,dom,agentusername) values ?`
-                        con.query(s, [k], (err) => {
+                        con.query(s, [k], (err, rows) => {
                             if (err) {
                                 res.send(err);
-                            } else {
-                                res.redirect('/agent/schedules/new?msg=Added');
                             }
                         });
+                        con.query(`select id from matches where team1=? and team2=? and dom=? and agentusername=?`, [team1, team2, dom, user], (err, result) => {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                let k = `insert into stand (standname,availability,id) values ?`
+                                var stand = ['B', 'C', 'D', 'E', 'F'];
+                                console.log(result[0].id);
+                                for (var i = 0; i < 5; i++) {
+                                    con.query(k, [[[stand[i], 5, result[0].id]]], (err) => {
+                                        console.log(err);
+                                    })
+                                }
+                                res.redirect("/agent/schedules?msg=Added");
+                            }
+                        })
                     }
                 }
             });
@@ -297,7 +381,14 @@ app.post('/agent/schedules_cancel', (req, res) => {
             if (err) {
                 console.log(err);
             } else {
-                res.redirect('/agent/schedules?msg=Succesfully cancelled');
+                con.query(`delete from stand where id=?`, [id], err => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        res.redirect('/agent/schedules?msg=Succesfully cancelled');
+                    }
+                })
+
             }
         });
     }
@@ -380,7 +471,8 @@ app.get('/agent/dashboard', function (req, res) {
             else {
                 res.render("agent_dashboard.ejs", {
                     user: req.session.username,
-                    match: rows
+                    match: rows,
+                    msg: ""
                 });
             }
         });
