@@ -3,20 +3,25 @@
 	src:"https://fonts.googleapis.com/css?family=Fira+Code&display=swap";
 
 }
-@media screen and (min-width: 600px){
-    .topnav{
-        display: none;
-    }
-}
-@media screen and (max-width: 600px){
+@media screen and (max-width: 600px) {
+    
     #oldnav{
         display: none;
     }
     #newnav{
         display:block;
         float:right;
-        margin-top: 16px;
-        margin-right: 5px;
+        margin-top: 10px;
+    }
+    #topnav{
+        display:block;
+        left: 50%;
+        float: right;
+        width: auto;
+        padding: 0;
+        margin:0;
+        background:gray;
+        opacity: 0.8;
     }
     .hamburger div {
         height: 5px;
@@ -28,52 +33,31 @@
         -moz-transition: all 5s ease;
         -o-transition: all 5s ease;
         -ms-transition: all 5s ease; */
-    }
-    .hamburger {
+      }
+      .hamburger {
         height: 5%;
         width: 10%;
         margin: 0;
-    }
-    .topnavtoggle{
-        display:none;
-        left: 50%;
-        /* float: right; */
-        width: auto;
-        /* padding: 0; */
-        margin:0;
-        background:gray;
-        opacity: 0.8;
-        padding: 5px 0;
-    }
-    .topnavnaf{
-        display: block;
-        /* left: 50%; */
-        height: 100%;
-        /* float: right; */
-        /* width: 150px; */
-        width: auto;
-        padding: 0;
-        margin:0;
-        background:gray;
-        opacity: 0.6;
-        text-align: start;
-        letter-spacing: 2px;
+      }
+      #main{
+        display: inline-flex;
+        height: auto;
         z-index: 100;
+        /* background: black; */
+        flex-direction: column;
+        align-items: flex-end;
+        justify-items: center;
     }
-}
-#main{
-    display: flex;
-    align-items:flex-end;
-    justify-content: flex-end;
-    /* background: gray; */
-}
-.ham{
-    color:whitesmoke;
-    text-decoration: none;
 }
 *{
     margin: 0;
     font-family:'Fira Code', monospace;
+}
+#topnav{
+    display: none;
+}
+#main{
+    display: none;
 }
 body{
     font-weight: 400;
@@ -106,7 +90,7 @@ header{
     /* background :#7d83b0; */
     FILL:#f3f3f3;
     background: linear-gradient(rgba(31,200,219,1),rgba(31,200,219,0));
-    height: 10vh;
+    height: 12vh;
 }
 nav ul{
     margin : 0;
@@ -165,17 +149,12 @@ body{
 }
 
 .logo{
-    height: 11.75vh;
+    height: 12vh;
     width: auto;
     /* border: 100%; */
     float: left ;
 }
-#main{
-    display: flex;
-    /* flex-direction: column; */
-    align-items: flex-start;
-    /* justify-items: flex-end; */
-}
+
 
 .box label{
 	margin: 0;
@@ -218,7 +197,7 @@ padding-left: 20px;
     width: auto;
     height: auto;
     /* min-height: 375px; */
-    z-index: 30;
+    z-index: -100;
     overflow:hidden;
     border-radius: 5%;
 	min-width: 300px;
@@ -237,7 +216,7 @@ padding-left: 20px;
     /* flex-direction: column; */
 	/* margin-bottom: 30px;     */
     /* align-self: flex-end; */
-    display: none;  
+    /* display: none;   */
     /* align-content: flex-end; */
     box-shadow: 10px 5px 5px #888888; 
 }
@@ -245,7 +224,6 @@ padding-left: 20px;
     width: auto;
     height: auto;
     /* min-height: 150px; */
-    z-index: 30;
     overflow:hidden;
     border-radius: 5%;
 	min-width: 300px;
@@ -264,7 +242,7 @@ padding-left: 20px;
     flex-direction: column;
 	/* margin-bottom: 30px;     */
     /* align-self: flex-end; */
-    display: block;  
+    display: none;  
     /* align-content: flex-end; */
     box-shadow: 10px 5px 5px #aaaaaa;
 }
@@ -328,7 +306,8 @@ border-radius: 100vh;
     cursor: pointer;
 }
 .up_in:hover{
-    color:maroon;
+    background-color:royalblue;
+    color: white;
     font-weight: 100;
     cursor: pointer;
   }
@@ -347,6 +326,32 @@ border-radius: 100vh;
     color:white;
   }
   .up_in2:hover{
-      /* color:rgb(31,200,219); */
+      color:rgb(31,200,219);
       cursor:pointer;
+  }
+  .topnav a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+  
+  /* Change the color of links on hover */
+  .topnav a:hover {
+    background-color: #ddd;
+    color: black;
+  }
+  
+  /* Add an active class to highlight the current page */
+  .topnav a.active {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  /* Hide the link that should open and close the topnav on small screens */
+  .topnav .icon {
+    display: none;
   }

@@ -1,6 +1,43 @@
 *{
     margin: 0;
     padding: 0;
+    overflow:hidden;
+}
+@font-face{
+    font-family:'Fira Code', monospace;
+	src:"https://fonts.googleapis.com/css?family=Fira+Code&display=swap";
+
+}
+*{
+    margin: 0;
+    font-family:'Fira Code', monospace;
+}
+html{
+    overflow: scroll;
+}
+@media screen and (max-width: 770px){
+    html{
+        overflow-y: scroll;
+    }
+    body{
+        overflow: scroll;
+    }
+    #main{
+        flex-direction: column;
+        height:100%;
+    }
+    svg{
+        width:100pt;
+        height: 100pt;
+    }
+    #text{
+        height: 60%;
+        width: 100vw;
+    }
+    #stadium{
+        height: 40%;
+        width: 770px;
+    }
 }
 #container{
     display: flex;
@@ -11,7 +48,9 @@
 }
 
 #head{
-    background :#55d6aa;
+    /* background: linear-gradient(to top,rgba(31,200,219,1),rgba(31,200,219,0)); */
+    background: linear-gradient( rgba(0,177,229,1),rgba(0,0,0,0));
+    /* background: #00b1e5; */
     height: 12vh;
     display: flex;
     justify-content: space-between;
@@ -27,7 +66,7 @@ nav ul{
 }
 nav li{
     display : inline-block; 
-    margin-left : 70px;
+    margin-left : 35px;
     margin-top : 25px;
     padding-top:25px;
     padding-bottom: 10px;
@@ -35,7 +74,7 @@ nav li{
     position: relative;
 }
 nav a{
-    color:whitesmoke;
+    color:darkblue;
     text-decoration: none;
     text-transform: uppercase;
 }
@@ -56,29 +95,153 @@ nav a:hover::before{
     width : 100%;
 }
 #main{
+    /* overflow: scroll; */
     display: flex;
-    flex-direction: row;
-    height: 88vh;
+    /* flex-direction: column; */
+    height: 100%;
+    /* width: 100%; */
     /* align-items: center; */
 }
 #stadium{
     /* background-color: blue; */
-    width: 40vw;
+    width: 40%;
     align-self: center;
 }
 #text{
-    background: red;
-    width: 60vw;
+    /* background:linear-gradient(#0072c4,white,#186214); */
+    width: 60%;
+    height: 770px;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
 }
 #box{
-    background: yellow;
-    width: 40vw;
-    height: 60vh;
+    /* background: yellow,0; */
+    width: 25vw;
+    height: 45vh;
 }
 .bottom_left:hover,.bottom_right:hover,.bottom_mid:hover,.left:hover,.right:hover,.top:hover{
     fill:black;
     cursor: pointer;
 }
+#stadium{
+    background: whitesmoke;
+}
+h1{
+    text-transform: uppercase;
+}
+/* footer{
+    height: 2vh;
+    background: linear-gradient(to top,rgba(31,200,219,1),rgba(31,200,219,0));
+} */
+#team1{
+    width:100%;
+    height:40%;
+    display:flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding-bottom:5vh;
+    color:whitesmoke;
+    /* background:linear-gradient(to top,rgba(0,114,196,1),rgba(0,114,196,0)); */
+    background-image:linear-gradient(to top,rgba(68,131,224,1),rgba(68,131,224,0)),url(https://resources.pulse.icc-cricket.com/ICC/teams/header/men/IND.png);
+    border: black;
+        border-style:solid;
+        border-radius:5vh;
+        margin-right:2%;
+        margin-left:2.5%;
+    }
+#team2{
+    width:100%;
+    height:40%;
+    /* background: linear-gradient(#186214); */
+    display:flex;
+    justify-content: center;
+    align-items: flex-end;
+    color:whitesmoke;
+    background-image:linear-gradient(to top,rgba(0,74,15,1),rgba(0,74,15,0)),url(https://resources.pulse.icc-cricket.com/ICC/teams/header/men/PAK.png);
+    background-position: center;
+    border: black;
+        border-style:solid;
+        border-radius:5vh;
+        margin-right:2%;
+        margin-left:2.5%;
+}
+#info{
+    width:100%;
+    height:20%;
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    flex-direction: column;
+    color:black;
+    /* background:#00b1e5; */
+}
+.buttons{
+    position: relative;
+    
+    /* display:inline-block; */
+    /* align-items: center; */
+    /* margin-bottom: 3vh; */
+    color: black;
+    background:linear-gradient(rgba(255,255,255,0));
+    margin : 1vh;
+    /* margin-left: 13.5vh; */
+    text-transform: uppercase;
+    text-decoration: none;
+    font-size: 15px;
+    /* padding:5px; */
+    /* opacity: 0.5; */
+    /* overflow: hidden; */
+    transition : 0.2s;
+    height:auto;
+    width: auto;
+    border-radius:10%;
+    /* transition : 0.2s; */
+    }
+    /* #team1:hover{
+        background-image{
+            transform: scale(1.2,1.2);
+        }
+         border: black;
+        border-style: solid;
+        border-radius:5vh; 
+    } */
+    .container{
+        background:whitesmoke;
+    }
+    #cnf{
+        color:black;
+		text-decoration: none;
+		text-transform: uppercase;
+		padding: 2vh 2.5vh;
+		border-radius: 100vh;
+        background: white;
+        /* text-align: center;  */
+}
+#back{
+    color:black;
+		text-decoration: none;
+		text-transform: uppercase;
+		padding: 2vh 2.5vh;
+		border-radius: 100vh;
+        background: white;
+        
+}
+    *{
+        text-transform: uppercase;
+    }
+    a:hover{
+        cursor:pointer;
+    }
+    a{
+        text-decoration: none;
+    }
+    #cnf:hover{
+        background:green;
+		color:white;
+    }
+    #back:hover{
+        background:red;
+		color:white;
+    }

@@ -17,36 +17,81 @@
     <div class="container">
         <header>
             <img src="cric3removed2.png" alt="logo" class="logo" height="10px">
-            <nav>
-                <ul>
-                    <li><a href="">DASHBOARD</a></li>
-                    <li><a href="">FIXTURES</a></li>
-                    <li><a href="">BOOKINGS</a></li>
-                    <li><a href="">FAQS</a></li>
-                    <li><a href="/logout">Signout</a></li>
-                </ul>
-            </nav>
+            <div id="oldnav">
+                <nav>
+                    <ul>
+                        <li><a href="">DASHBOARD</a></li>
+                        <li><a href="">FIXTURES</a></li>
+                        <li><a href="">MY BOOKINGS</a></li>
+                        <li><a href="">FAQS</a></li>
+                        <li><a href="/logout">Signout</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div id="newnav">
+                <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                    <div class="hamburger" onclick="myFunction()">
+                        <div id="line1"></div>
+                        <div id="line2"></div>
+                        <div id="line3"></div>
+                    </div>
+                </a>
+            </div>
         </header>
         <div id="main">
+            <div class="topnavtoggle topnav">
+                <nav>
+                    <p><a class="ham" href="/">DASHBOARD</a></p><br>
+                    <p><a class="ham" href="">FIXTURES</a></p><br>
+                    <p><a class="ham" href="">MY BOOKINGS</a></p><br>
+                    <p><a class="ham" href="">FAQS</a></p><br>
+                    <p><a class="ham" href="">SIGNOUT</a></p><br>
+                </nav>
+
+                <!-- <li><a href="">PROFILE</a></li> -->
+            </div>
+        </div>
+        <div id="mainold">
             <div id="schedule">
                 <div id="content">
+                    <h1 style="text-align: center;"><%=msg%></h1>
                     <table>
-                        <% for(var i=0;i<match.length ; i++){ %>
-                            <tr>
-                                <td><%= match[i].team1 %></td>
-                                <td>Vs</td>
-                                <td><%= match[i].team2 %></td>
-                                <td><%= match[i].dom.toDateString() %></td>
-                                <td><form action="/dashboard/book" method="POST" >
+                        <% for(var i=0;i<3 ; i++){ %>
+                        <tr>
+                            <td><%= match[i].team1 %></td>
+                            <td>Vs</td>
+                            <td><%= match[i].team2 %></td>
+                            <td><%= match[i].dom.toDateString() %></td>
+                            <td>
+                                <form action="/dashboard/book" method="POST">
                                     <button type="submit" name="id" value="<%= match[i].id %>">BOOK</button>
-                                </form></td>
-                            </tr>
-                            <!-- <tr><hr></tr> -->
-                            <% } %>
+                                </form>
+                            </td>
+                        </tr>
+                        <!-- <tr><hr></tr> -->
+                        <% } %>
                     </table>
                 </div>
             </div>
         </div>
-    </div>
+
+        <script>
+            var x = document.querySelector(".topnavtoggle");
+            var flag = false;
+            document.querySelector("#newnav").addEventListener("click", function () {
+                if (!flag) {
+                    x.classList.remove("topnavtoggle");
+                    x.classList.add("topnavnaf");
+                    flag = true;
+                } else {
+                    x.classList.add("topnavtoggle");
+                    x.classList.remove("topnavnaf");
+                    flag = false;
+                }
+
+            });
+        </script>
 </body>
+
 </html>

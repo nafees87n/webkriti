@@ -16,7 +16,8 @@ app.use(session({
     cookie: { maxAge: 1000000000000000000000000 }
 }));
 var date = new Date();
-date = date.getFullYear() + '-' + '0' + (date.getMonth() + 1) + '-' + date.getDate();
+// console.log(k+7);
+var today = date.getFullYear() + '-' + '0' + (date.getMonth() + 1) + '-' + date.getDate();
 const con = mysql.createConnection({
     host: "localhost",
     user: "root",
@@ -28,9 +29,13 @@ con.connect((err) => {
     if (err) console.log(err);
     else {
         console.log("Database Connected!\n");
-        console.log(date);
+        console.log(today);
     }
 });
+{
+    let sql = `delete from matches where dom<?`
+    con.query(sql, date, () => { });
+}
 var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -125,13 +130,28 @@ app.post('/login', (req, res) => {
     });
 });
 app.get('/dashboard', (req, res) => {
+    let msg=req.query.msg;
+    let d=date.getDate()+7;
+    if(d>31){
+        if((date.getMonth()+1)==1 || (date.getMonth()+1)==3 ||(date.getMonth()+1)==5 ||(date.getMonth()+1)==7 ||(date.getMonth()+1)==8||(date.getMonth()+1)==10||(date.getMonth()+1)==12 ){
+            d=d-31;
+            var date1=date.getFullYear() + '-' + '0' + (date.getMonth() + 2) + '-' + d;
+        }else{
+            d=d-30;
+            var date1=date.getFullYear() + '-' + '0' + (date.getMonth() + 2) + '-' + d;
+        }
+    }
+    else{
+        var date1=today;
+    }
     if (req.session.username) {
         res.statusCode = 200;
-        let sql = `select * from matches`
+        let sql = `select * from matches where dom<=${date1}`
         con.query(sql, (err, rows) => {
             res.render("dashboard.ejs", {
                 user: req.session.username,
-                match: rows
+                match: rows,
+                msg:msg
             });
         });
     }
@@ -140,20 +160,26 @@ app.get('/dashboard', (req, res) => {
     }
 });
 app.post('/dashboard/book', (req, res) => {
-    let id = req.body.id;
-    console.log(id);
-    let sql = `select * from matches where id=?`
-    con.query(sql, [id], (err, rows) => {
-        res.render('booking.ejs', {
-            match: rows[0],
-            msg:""
+    if (req.session.username) {
+        let id = req.body.id;
+        console.log(id);
+        let sql = `select * from matches where id=?`
+        con.query(sql, [id], (err, rows) => {
+            res.render('booking.ejs', {
+                match: rows[0],
+                msg: ""
+            });
         });
-    });
+    }else{
+        res.redirect('/?msg=not logged in&type=login');
+    }
+
 });
 app.post('/dashboard/booking', (req, res) => {
     let id = req.body.ticket[0];
     let stand = req.body.ticket[1];
     console.log(req.body.ticket);
+
     if (stand == "") {
         let sql = `select * from matches where id=?`
         con.query(sql, [id], (err, rows) => {
@@ -172,23 +198,26 @@ app.post('/dashboard/booking', (req, res) => {
                 console.log("SUCCESS");
                 let sql = `select email from users where username=?`
                 con.query(sql, [req.session.username], (err, rows) => {
-                    qrcode.toDataURL('ID:' + id + "STAND:" + stand, function (err, url) {
-                        // console.log(url);
-                        var mailOptions = {
-                            from: 'Nafees Nehar',
-                            to: rows[0].email,
-                            subject: 'Your booked ticket.',
-                            text: `https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl=ID:${id}STAND:${stand}`
-                        };
-                        transporter.sendMail(mailOptions, function (error, info) {
-                            if (error) {
-                                console.log(error);
-                            } else {
-                                console.log('Email sent: ' + info.response);
-                                res.send("SUCCESS");
-                            }
-                        });
+                    // qrcode.toDataURL('ID:' + id + "STAND:" + stand, function (err, url) {
+                    // console.log(url);
+                    // let img=qrcode.toDataURL(`ID:${id}STAND:${stand}`);
+                    var mailOptions = {
+                        from: 'Nafees Nehar',
+                        to: rows[0].email,
+                        subject: 'Your booked ticket.',
+                        // text: `https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl=ID:${id}STAND:${stand}`
+                        text: "Your QRCODE",
+                        html: `<img src=https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl=ID:${id}STAND:${stand}/>`
+                    };
+                    transporter.sendMail(mailOptions, function (error, info) {
+                        if (error) {
+                            console.log(error);
+                        } else {
+                            console.log('Email sent: ' + info.response);
+                            res.redirect("/dashboard?msg=Booking Successfull");
+                        }
                     });
+                    // });
 
                 });
             }
@@ -238,7 +267,7 @@ app.post('/agent/schedules/new', (req, res) => {
                     res.redirect('/agent/schedules/new?msg=Incorrect password');
                 }
                 else {
-                    if (dom <= date) {
+                    if (dom <= today) {
                         res.redirect('/agent/schedules/new?msg=Cannot schedule for given date')
                     }
                     else {

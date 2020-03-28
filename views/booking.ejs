@@ -4,22 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>CricGo!</title>
     <link rel="stylesheet" href="booking.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+
 </head>
 
 <body>
     <div class="container">
         <div id="head">
             <img src="cric3removed2.png" alt="logo" id="logo">
-            <nav>
+            <!-- <nav>
                 <ul>
                     <li><a href="">HOME</a></li>
                     <li><a href="">BOOKINGS</a></li>
                     <li><a href="">FAQS</a></li>
                     <li><a href="/logout">Signout</a></li>
                 </ul>
-            </nav>
+            </nav> -->
         </div>
         <div id="main">
             <div id="stadium">
@@ -302,7 +307,7 @@
                                     fill="#b2b2b2" stroke="#f7f8f9" stroke-width="1.5" stroke-linejoin="miter"
                                     stroke-linecap="round" marker-start="none" marker-end="none"
                                     stroke-miterlimit="79.8403193612775" />
-                                <path class="left"
+                                <path class="lefta"
                                     d="M 161.917,544.237 L 125.039,577.498 C 89.08,550.044 44.222,468.406 33.754,403.859 C 22.353,333.56 35.44,239.999 68.306,193.018 L 112.482,214.524 C 85.868,273.383 74.326,331.067 83.306,389.517 C 92.09,446.694 128.025,512.755 161.917,544.237 Z"
                                     stroke="#f7f8f9" fill="#b2b2b2" stroke-width="1.5" stroke-linejoin="miter"
                                     stroke-linecap="round" marker-start="none" marker-end="none"
@@ -528,29 +533,36 @@
                         </g>
                     </g>
                 </svg>
+                <p style="text-align: center;">CLICK on your desired stand</p>
             </div>
-            <div id="text">
-                <div id="box" style="text-align: center;">
-                    <h1><%=msg %></h1>
+            <div id="text" style="text-align: center;">
+                <div id="team1">
                     <h1><%= match.team1 %></h1>
-                    <h1>VS</h1>
+                </div>
+
+                <div id="info">
+                    <p><b>Tuesday, 31 March 2020</b></p>
+                    <p><b>Stand:</b><span id="athover"></span></p>
+                    <div class="buttons">
+                        <form action="/dashboard/booking" method="POST">
+                            
+                            <p><a href=""><span id="cnf"><button type="submit" name="ticket" value="<%= match.id %>">Confirm</button> </span></a></p><br>
+                            <input type="hidden" id="stand" name="ticket"> </input>
+                            <p><a href="/dashboard"><span id="back">Back</span></a></p>
+                        </form>
+                    </div>
+                </div>
+
+                <div id="team2" style="background-image:linear-gradient(to top,rgba(0,74,15,1)),url(https://resources.pulse.icc-cricket.com/ICC/teams/header/men/PAK.png);">
                     <h1><%= match.team2 %></h1>
-                    <h1>ON</h1>
-                    <h1><%= match.dom.toDateString() %></h1>
-                    <h1>Click on resp. stand to select:<span id="athover"></span></h1>
-                    <form action="/dashboard/booking" method="POST">
-                        <input type="hidden" name="ticket" value="<%= match.id %>"></input>
-                        <button id="stand" type="submit" name="ticket" value="">Confirm Booking</button>
-                    </form>
-                    <br>
-                    <form action="/dashboard" method="get">
-                        <button type="submit">Back</button>
-                    </form>
                 </div>
             </div>
         </div>
     </div>
     <script src="booking.js"></script>
+    <footer>
+
+    </footer>
 </body>
 
 </html>
