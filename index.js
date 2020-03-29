@@ -5,7 +5,6 @@ const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
 const session = require("express-session");
 const nodemailer = require('nodemailer');
-var fs = require('fs');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static("public"));
@@ -274,8 +273,7 @@ app.post('/dashboard/booking', (req, res) => {
                                 from: 'Nafees Nehar',
                                 to: rows[0].email,
                                 subject: 'Your booked ticket.',
-                                // text: `https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl=ID:${id}STAND:${stand}`
-                                html: `<p>Dear ${req.session.username},</p>Congratulations! Your seat has been confirmed.We hope that you will have an amazing time. Details of your booking are as follows.</p><p>Match ID: ${id}</p><p>Stand No:${stand}</p><p>Please carry a valid ID at the time of arrival.</p><img src=https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl=ID:${id}STAND:${stand}/>`
+                                html: `<p>Dear ${req.session.username},</p>Congratulations! Your seat has been confirmed.We hope that you will have an amazing time. Details of your booking are as follows.</p><p>Match ID: ${id}</p><p>Stand No:${stand}</p><p>Please carry a valid ID at the time of arrival.</p><img src=https://chart.googleapis.com/chart?rcht=qr&chs=250x250&chl=ID:${id}STAND:${stand}/>`
                             };
                             transporter.sendMail(mailOptions, function (error, info) {
                                 if (error) {
