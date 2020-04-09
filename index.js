@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
 const session = require("express-session");
 const nodemailer = require('nodemailer');
+var fs = require('fs');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static("public"));
@@ -12,7 +13,7 @@ app.use(session({
     secret: 'kpNNSM',
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 2*60*60*1000 }
+    cookie: { maxAge: 2 * 60 * 60 * 1000 }
 }));
 var date = new Date();
 // if(date.getDate()) console.log('0'+date.getDate())
@@ -50,12 +51,12 @@ app.get('/', (req, res) => {
         type: type
     });
 });
-app.get('/faq',(req,res)=>{
-    fs.readFile('faq.pdf', function(err, data) {
+app.get('/faq', (req, res) => {
+    fs.readFile('faq.pdf', function (err, data) {
         // res.writeHead(200, {'Content-Type': 'text/html'});
         // res.write(data);
         res.end();
-      });
+    });
 })
 app.get('/agent', (req, res) => {
     let msg = req.query.msg;
@@ -183,19 +184,23 @@ app.get('/mybookings', (req, res) => {
         res.redirect('/?msg=You are not logged in!!');
     }
     else {
-        let sql = `select id from booking where username=?`
+        let sql = `select * from booking,matches where booking.username=? and booking.id=matches.id`
         con.query(sql, [req.session.username], (err, rows) => {
-            let k = `select * from matches where id=?`
-            con.query(k, [rows[0].id], (err, result) => {
-                res.render("mybookings.ejs", {
-                    msg: "",
-                    user: req.session.username,
-                    match: result
-                })
+            res.render("mybookings.ejs", {
+                msg: "",
+                user: req.session.username,
+                match: rows
             })
         })
     }
 })
+app.get('/dashboard/book', (req, res) => {
+    if (req.session.username) {
+        res.redirect('/dashboard?msg=Click On Book To Continue');
+    } else {
+        res.redirect('/?msg=not logged in&type=login');
+    }
+});
 app.post('/dashboard/book', (req, res) => {
     if (req.session.username) {
         let id = req.body.id;
@@ -216,6 +221,13 @@ app.post('/dashboard/book', (req, res) => {
         res.redirect('/?msg=not logged in&type=login');
     }
 
+});
+app.get('/dashboard/booking', (req, res) => {
+    if (req.session.username) {
+        res.redirect('/dashboard?msg=Click On Book To Continue');
+    } else {
+        res.redirect('/?msg=not logged in&type=login');
+    }
 });
 app.post('/dashboard/booking', (req, res) => {
     let id = req.body.ticket[0];
@@ -273,7 +285,8 @@ app.post('/dashboard/booking', (req, res) => {
                                 from: 'Nafees Nehar',
                                 to: rows[0].email,
                                 subject: 'Your booked ticket.',
-                                html: `<p>Dear ${req.session.username},</p>Congratulations! Your seat has been confirmed.We hope that you will have an amazing time. Details of your booking are as follows.</p><p>Match ID: ${id}</p><p>Stand No:${stand}</p><p>Please carry a valid ID at the time of arrival.</p><img src=https://chart.googleapis.com/chart?rcht=qr&chs=250x250&chl=ID:${id}STAND:${stand}/>`
+                                // text: `https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl=ID:${id}STAND:${stand}`
+                                html: `<p>Dear ${req.session.username},</p>Congratulations! Your seat has been confirmed.We hope that you will have an amazing time. Details of your booking are as follows.</p><p>Match ID: ${id}</p><p>Stand No:${stand}</p><p>Please carry a valid ID at the time of arrival.</p><img src=https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl=ID:${id}STAND:${stand}/>`
                             };
                             transporter.sendMail(mailOptions, function (error, info) {
                                 if (error) {
