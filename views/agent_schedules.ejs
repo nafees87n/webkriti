@@ -8,7 +8,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
     <link rel="manifest" href="./site.webmanifest">
-    <!-- <title><%= user %>'s Schedules</title> -->
+    <title><%= user %>'s Schedules</title>
     <link rel="stylesheet" type="text/css" href="agent_schedules.css">
 
 </head>
@@ -21,10 +21,10 @@
             <div id="oldnav">
                 <nav>
                     <ul>
-                        <li><a href="">DASHBOARD</a></li>
-                        <li><a href="">FIXTURES</a></li>
-                        <li><a href="">MY SCHEDULES</a></li>
-                        <!-- <li><a href="">FAQS</a></li> -->
+                        <li><a href="/agent/dashboard">DASHBOARD</a></li>
+                        <!-- <li><a href="">FIXTURES</a></li> -->
+                        <li><a href="/agent/schedules">MY SCHEDULES</a></li>
+                        
                         <li><a href="/agent/logout">Signout</a></li>
                     </ul>
                 </nav>
@@ -42,11 +42,11 @@
         <div id="main">
             <div class="topnavtoggle topnav">
                 <nav>
-                    <p><a class="ham" href="/dashboard">DASHBOARD</a></p><br>
-                    <p><a class="ham" href="/dashboard/fixtures">FIXTURES</a></p><br>
-                    <p><a class="ham" href="/dashboard/mybookings">MY BOOKINGS</a></p><br>
+                    <p><a class="ham" href="/agent/dashboard">DASHBOARD</a></p><br>
+                    <!-- <p><a class="ham" href="/d/fixtures">FIXTURES</a></p><br> -->
+                    <p><a class="ham" href="/agent/schedules">MY SCHEDULES</a></p><br>
                     <!-- <p><a class="ham" href="">FAQS</a></p><br> -->
-                    <p><a class="ham" href="/logout">SIGNOUT</a></p><br>
+                    <p><a class="ham" href="/agent/logout">SIGNOUT</a></p><br>
                 </nav>
 
                 <!-- <li><a href="">PROFILE</a></li> -->

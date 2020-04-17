@@ -5,12 +5,12 @@ const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
 const session = require("express-session");
 const nodemailer = require('nodemailer');
-var fs = require('fs');
+// var fs = require('fs');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static("public"));
 app.use(session({
-    secret: 'kpNNSM',
+    secret: process.env.secret,
     resave: false,
     saveUninitialized: true,
     cookie: { maxAge: 2 * 60 * 60 * 1000 }
@@ -19,10 +19,10 @@ var date = new Date();
 // if(date.getDate()) console.log('0'+date.getDate())
 var today = date.getFullYear() + '-' + '0' + (date.getMonth() + 1) + '-' + date.getDate();
 const con = mysql.createConnection({
-    host: "sql12.freemysqlhosting.net",
-    user: "sql12329225",
-    password: "7xxPLuIkcU",
-    database: "sql12329225"
+    host: process.env.host,
+    user: process.env.user,
+    password: process.env.password,
+    database: process.env.database
 });
 
 con.connect((err) => {
@@ -39,8 +39,8 @@ con.connect((err) => {
 var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'cricgoofficial@gmail.com',
-        pass: 'Password@123'
+        user:process.env.mail_user,
+        pass:process.env.pass
     }
 });
 app.get('/', (req, res) => {
@@ -51,13 +51,13 @@ app.get('/', (req, res) => {
         type: type
     });
 });
-app.get('/faq', (req, res) => {
-    fs.readFile('faq.pdf', function (err, data) {
-        // res.writeHead(200, {'Content-Type': 'text/html'});
-        // res.write(data);
-        res.end();
-    });
-})
+// app.get('/faq', (req, res) => {
+//     fs.readFile('faq.pdf', function (err, data) {
+//         // res.writeHead(200, {'Content-Type': 'text/html'});
+//         // res.write(data);
+//         res.end();
+//     });
+// })
 app.get('/agent', (req, res) => {
     let msg = req.query.msg;
     let type = req.query.type;
@@ -172,8 +172,7 @@ app.get('/fixtures', (req, res) => {
                 res.render("fixtures.ejs", {
                     msg: "",
                     match: rows,
-                    non: result,
-                    user: req.session.user
+                    non: result
                 });
             })
         });
@@ -213,7 +212,8 @@ app.post('/dashboard/book', (req, res) => {
                 res.render('booking.ejs', {
                     match: rows[0],
                     msg: "",
-                    avail: result
+                    avail: result,
+                    user:req.session.username
                 });
             });
         });
@@ -241,7 +241,8 @@ app.post('/dashboard/booking', (req, res) => {
                 res.render('booking.ejs', {
                     match: rows[0],
                     msg: "Select a Stand By clicking on the Stadium Graphic",
-                    avail: r
+                    avail: r,
+                    user:req.session.username
                 });
             })
 
@@ -255,7 +256,8 @@ app.post('/dashboard/booking', (req, res) => {
                         res.render('booking.ejs', {
                             match: rows[0],
                             msg: "Seat Not Available In That Stand",
-                            avail: r
+                            avail: r,
+                            user:req.session.username
                         });
                     })
 
@@ -293,7 +295,7 @@ app.post('/dashboard/booking', (req, res) => {
                                     console.log(error);
                                 } else {
                                     console.log('Email sent: ' + info.response);
-                                    res.redirect("/dashboard?msg=Booking Successfull");
+                                    res.redirect("/dashboard?msg=Booking Successful.Issued QR Code has been Emailed.    ");
                                 }
                             });
                             // });
@@ -328,7 +330,8 @@ app.get('/agent/schedules/new', (req, res) => {
         res.send("Not Logged in");
     } else {
         res.render("agent_schedules_new.ejs", {
-            msg: msg
+            msg: msg,
+            user:req.session.username
         });
     }
 });

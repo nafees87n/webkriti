@@ -16,6 +16,8 @@ body{
     
     background-image: url(bg.jpg);
     font-weight: 400;
+    background-size:cover;
+    background-position: center;
     /* overflow: scroll; */
 }
 @media screen and (min-width: 770px){

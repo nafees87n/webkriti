@@ -11,6 +11,9 @@
 body{
     font-family: sans-serif ;
     font-weight: 400;
+    background: url('Cricket Stadium_1_RF_RMPL-01.jpg') no-repeat;
+    background-size:cover;
+    background-position: center;
 }
 .logo{
     height: 12vh;
@@ -19,7 +22,7 @@ body{
     float: left ;
 }
 .container{
-    background: url('Cricket Stadium_1_RF_RMPL-01.jpg') no-repeat;
+    /* background: url('Cricket Stadium_1_RF_RMPL-01.jpg') no-repeat; */
     background-size:cover;
     background-position: center;
     height: 100vh;
