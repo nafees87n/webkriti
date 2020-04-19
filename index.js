@@ -5,12 +5,14 @@ const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
 const session = require("express-session");
 const nodemailer = require('nodemailer');
-// var fs = require('fs');
+const dotenv = require('dotenv');
+dotenv.config();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static("public"));
 app.use(session({
-    secret: process.env.secret,
+    secret:process.env.secret,
+    // secret:"KPNNSM",
     resave: false,
     saveUninitialized: true,
     cookie: { maxAge: 2 * 60 * 60 * 1000 }
