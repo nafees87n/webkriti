@@ -19,7 +19,7 @@
   "homepage": "https://github.com/nafees87n/webkriti#readme",
   "dependencies": {
     "argon2": "^0.26.1",
-    "bcrypt": "^4.0.1",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
     "ejs": "^3.0.1",
